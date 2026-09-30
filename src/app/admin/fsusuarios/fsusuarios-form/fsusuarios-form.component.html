@@ -1,0 +1,84 @@
+<div class="fsusuario-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogoTitulo}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <img [src]="dato.foto" class="avatar dato-foto huge m-0"
+                 [alt]="dato.nombre"/>
+            <div class="dato-nombre mt-8">{{dato.nombre}}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="datoForm">
+
+            <!-- TOGGLE ENCARGADO -->
+            <div fxLayout="row" fxLayoutAlign="end start" *ngIf="!dato.tipoAdmin">
+                <mat-slide-toggle disableRipple class="mat-override" formControlName="tipoEncargado">
+                    Encargado
+                </mat-slide-toggle>
+    
+            </div>
+            
+            <div fxLayout="row" fxLayoutAlign="start start" *ngIf="!dato.tipoAdmin">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Cargo</mat-label>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <input name="titulo" formControlName="titulo" matInput>
+                </mat-form-field>
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <!-- PENDIENTE -->
+        <div *ngIf="estado !== 'Activo'">
+            <button 
+                    mat-button
+                    class="mr-8"
+                    (click)="matDialogRef.close(['rechaza',datoForm])"
+                    aria-label="Rechaza"
+                    matTooltip="Rechaza">
+                RECHAZAR
+            </button>
+
+            <button 
+                    mat-button
+                    class="save-button"
+                    (click)="matDialogRef.close(['activa',datoForm])"
+                    aria-label="Salvar">
+                ACTIVAR
+            </button>
+        </div>
+
+        <!-- USUARIO ACTIVO -->
+        <div *ngIf="estado === 'Activo'">
+            <button *ngIf="!dato.tipoAdmin"
+                    mat-button
+                    class="mr-8"
+                    (click)="matDialogRef.close(['elimina',datoForm])"
+                    aria-label="Elimina"
+                    matTooltip="Elimina">
+                ELIMINAR
+            </button>
+
+            <button 
+                    mat-button
+                    class="save-button"
+                    (click)="matDialogRef.close(['salva',datoForm])"
+                    [disabled]="datoForm.invalid"
+                    aria-label="salva">
+                GUARDAR
+            </button>
+        </div>
+        
+    </div>
+</div>

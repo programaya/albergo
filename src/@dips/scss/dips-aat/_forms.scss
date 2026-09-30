@@ -1,0 +1,114 @@
+.form-stacked {
+  .form-group {
+    .form-label {
+      line-height: normal;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+  }
+}
+
+.checkbox-inline {
+  display: inline-block;
+}
+
+.form-group {
+  margin-bottom: 30px;
+
+  .help-block {
+    font-size: $aat-font-size-sm;
+    letter-spacing: $aat-letter-spacing-sm;
+
+    // Required asterisk *
+    em {
+      color: $aat-card-txt-color;
+    }
+  }
+
+  .form-label {
+    color: $aat-form-label-color;
+    font-size: $aat-font-size-xs;
+    letter-spacing: $aat-letter-spacing-xs;
+    line-height: $aat-input-height;
+    text-align: right;
+    @media only screen and (max-width: $screen-xs-max) {
+      text-align: left;
+    }
+
+    &.form-label-big {
+      color: $aat-form-label-big-color;
+      font-size: $aat-font-size-sm;
+    }
+  }
+
+
+
+  &.form-group-vertical {
+    .form-label {
+      color: $aat-grey;
+      font-size: $aat-font-size-xs;
+      vertical-align: top;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .input-validation {
+    width: 100%;
+
+    .validation-message {
+      color: $aat-grey;
+      display: block;
+      font-size: $aat-font-size-sm;
+      font-weight: 500;
+      letter-spacing: $aat-letter-spacing-sm;
+      margin-left: 12px;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .label {
+    border-radius: 8px;
+    font-size: $aat-font-size-sm;
+    letter-spacing: $aat-letter-spacing-sm;
+    padding: 8px 12px;
+
+    &.label-danger {
+      background-color: $aat-form-error-bkg-color;
+      color: $aat-form-error-color;
+    }
+  }
+}
+
+.input-group-addon,
+.form-control,
+.form-control-static {
+  background-color: transparent;
+  color: $aat-form-input-color;
+  font-size: $aat-font-size-sm;
+  height: $aat-input-height;
+  letter-spacing: $aat-letter-spacing-sm;
+}
+
+.input-group-addon,
+.form-control {
+  @include _placeholder {
+    color: $aat-form-input-broder-color;
+  }
+
+  border-color: $aat-form-input-broder-color;
+  border-radius: $aat-form-input-broder-radius;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.btn-form {
+  @include button($aat-white, $aat-purple, $aat-purple);
+}

@@ -1,0 +1,74 @@
+<div id=items>
+    <mat-datasource [dataSource]="source">
+        <mat-table class="items-table"
+                       #table [dataSource]="source"
+                       matSort
+                       start="desc" 
+                       #sort="matSort"
+                       [@animateStagger]="{value:'50'}"
+                       dipsPerfectScrollbar>
+
+            <ng-container matColumnDef="servicios">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="start">
+                        <mat-icon *ngIf="verificaEstaPagada(fila) == true">attach_money</mat-icon>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+            <!-- Nombre    -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Habitación</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- ENTRADA -->
+            <ng-container matColumnDef="entrada">
+                <mat-header-cell *matHeaderCellDef>Entrada</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate" *ngIf="item.horaInicio != 0">{{item.horaInicio |date:"shortTime"}}</p>
+                </mat-cell>
+           </ng-container>
+
+           <!-- SALIDA -->
+           <ng-container matColumnDef="salida">
+                <mat-header-cell *matHeaderCellDef>Salida</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate" *ngIf="item.horaFin != 0">{{item.horaFin |date:"shortTime"}}</p>
+                </mat-cell>
+           </ng-container>
+
+           <!-- DONDE -->
+           <ng-container matColumnDef="donde">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="start">
+                        <mat-icon *ngIf="dondeEstan(fila) == 1">hotel</mat-icon>
+                        <mat-icon *ngIf="dondeEstan(fila) == 2">directions_car</mat-icon>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+            <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                    class="fila"
+                    (click)="editaItem(fila)"
+                    matRipple
+                    [@animate]="{value:'*',params:{y:'100%'}}"
+                    [ngStyle]="{'background-color': seleccionColor(fila)}">
+            </mat-row>
+        </mat-table>
+    </mat-datasource>
+</div>
+
+
+

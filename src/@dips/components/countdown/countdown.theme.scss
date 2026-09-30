@@ -1,0 +1,17 @@
+@mixin dips-countdown-theme($theme) {
+
+    $foreground: map-get($theme, foreground);
+
+    dips-countdown {
+
+        .dips-countdown {
+
+            .time {
+
+                .title {
+                    color: map-get($foreground, secondary-text);
+                }
+            }
+        }
+    }
+}

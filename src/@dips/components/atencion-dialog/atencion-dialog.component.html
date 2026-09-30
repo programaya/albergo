@@ -1,0 +1,64 @@
+<div class="atencion-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-warn m-0">
+
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{titulo}}</span>
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <!-- <span *ngIf="icon" [ngClass]="'alert-modal-icon alert-modal-icon-' + iconColor + ' fa fa-' + icon"></span> -->
+
+    <div mat-dialog-content class="p-24 pb-0 m-0">
+      <div fxLayout="row" fxLayoutAlign="center center">
+            <p>{{linea1}}</p>
+            <p>{{linea2}}</p>
+            <p>{{linea3}}</p>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button 
+                mat-button
+                class="mr-8"
+                (click)="matdialogRef.close(false)"
+                aria-label="Cancelar"
+                matTooltip="Cancelar">
+            {{botonCancela}}
+        </button>
+
+        <!-- <div *ngIf="opcion"> -->
+          <button 
+                  mat-button
+                  class="save-button"
+                  (click)="matdialogRef.close(true)"
+                  aria-label="Salvar">
+              {{botonAceptar}}
+          </button>
+        <!-- </div>   -->
+
+    </div>
+</div>
+
+
+<!-- <div class="alert-modal">
+    <span *ngIf="icon" [ngClass]="'alert-modal-icon alert-modal-icon-' + iconColor + ' fa fa-' + icon"></span>
+    <h1 class="alert-modal-title">{{ title }}</h1>
+    <span class="alert-modal-text">{{ text }}</span>
+    <div *ngIf="input">
+      <input class="alert-modal-input form-control" [(ngModel)]="inputData">
+      <div class="alert-modal-buttons" *ngIf="input">
+        <button type="button" class="btn alert-modal-button alert-modal-button-success" [mat-dialog-close]="inputData">CONFIRM</button>
+        <button type="button" class="btn alert-modal-button alert-modal-button-failure" [mat-dialog-close]="false">CANCEL</button>
+      </div>
+    </div>
+    <div class="alert-modal-buttons" *ngIf="!input && options">
+      <button type="button" class="btn alert-modal-button alert-modal-button-success" [mat-dialog-close]="true">YES</button>
+      <button type="button" class="btn alert-modal-button alert-modal-button-failure" [mat-dialog-close]="false">NO</button>
+    </div>
+    <div class="alert-modal-buttons" *ngIf="!input && !options && button">
+      <button type="button" class="btn alert-modal-button" [mat-dialog-close]="false">{{ button }}</button>
+    </div>
+  </div> -->
+  

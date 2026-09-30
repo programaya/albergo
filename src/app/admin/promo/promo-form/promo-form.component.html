@@ -1,0 +1,119 @@
+<div class="promo-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogoTitulo}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <!-- <img [src]="dato.avatar" class="avatar dato-avatar huge m-0"
+                 [alt]="dato.nombre"/> -->
+            <div class="dato-nombre mt-8">{{dato.nombre}}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" dipsPerfectScrollbar>
+
+        <form [formGroup]="datoForm">
+
+            <!-- TOGGLE EMPRESA -->
+            <div fxLayout="row" fxLayoutAlign="end start">
+                <mat-slide-toggle disableRipple class="mat-override" formControlName="activo">
+                    Activa
+                </mat-slide-toggle>
+    
+            </div>
+
+            <!-- NOMBRE -->
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <mat-icon matSuffix class="secondary-text">check_circle</mat-icon> 
+                    <input name="nombre" formControlName="nombre" matInput required>
+                </mat-form-field>
+            </div>
+
+            <!-- SEMANA     -->
+            <mat-form-field class="full-width">
+                <mat-select placeholder="Seleccione Día" formControlName="semana" multiple>
+        
+                    <!-- <app-select-check-all [model]="form.get('dia')" [values]="semana">
+                    </app-select-check-all>
+         -->
+                    <mat-option *ngFor="let dia of semana" [value]="dia.id">{{ dia.nombre }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- HORAS     -->
+            <div class="custom-slider">
+                <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options" formControlName="horas"> </ngx-slider>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Tiempo de Permanencia</mat-label>
+                    <mat-icon matSuffix class="secondary-text">access_time</mat-icon>
+                    <input matInput placeholder="Permanencia" 
+                           name="permanencia" 
+                           formControlName="permanencia" 
+                           type="number">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Importe</mat-label>
+                    <mat-icon matSuffix class="secondary-text">monetization_on</mat-icon>
+                    <input matInput placeholder="Importe"
+                        name="importe"
+                        formControlName="importe"
+                        type="number">
+                        <span matPrefix>$&nbsp;</span>       
+                    </mat-form-field>
+            </div>
+
+            <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Notas</mat-label>
+                    <textarea name="nota" formControlName="nota" matInput type="text" max-rows="4"></textarea>
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button *ngIf="accion === 'editar'"
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',datoForm])"
+                aria-label="Borrar"
+                matTooltip="Borrar">
+            BORRAR
+        </button>
+
+        <button *ngIf="accion !== 'editar'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(datoForm)"
+                [disabled]="datoForm.invalid"
+                aria-label="SALVAR">
+            AGREGAR
+        </button>
+
+        <button *ngIf="accion === 'editar'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['save',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="SALVAR">
+            SALVAR
+        </button>
+
+    </div>
+</div>

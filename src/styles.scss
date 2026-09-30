@@ -1,0 +1,9 @@
+// Import Dips core library
+@import "src/@dips/scss/core";
+
+// Import app.theme.scss
+@import "src/app/app.theme";
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

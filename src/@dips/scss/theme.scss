@@ -1,0 +1,30 @@
+@import "src/@dips/components/countdown/countdown.theme";
+@import "src/@dips/components/material-color-picker/material-color-picker.theme";
+@import "src/@dips/components/search-bar/search-bar.theme";
+@import "src/@dips/components/shortcuts/shortcuts.theme";
+@import "src/@dips/components/sidebar/sidebar.theme";
+@import "src/@dips/components/theme-options/theme-options.theme";
+@import "src/@dips/components/widget/widget.theme";
+
+@mixin dips-core-theme($theme) {
+
+    // Theming for Dips core styles
+    @include colors-theme($theme);
+    @include cards-theme($theme);
+    @include material-theme($theme);
+    @include page-layouts-theme($theme);
+    @include typography-theme($theme);
+
+    // Theming for Dips components
+    @include dips-countdown-theme($theme);
+    @include dips-search-bar-theme($theme);
+    @include dips-shortcuts-theme($theme);
+    @include dips-sidebar-theme($theme);
+    @include dips-theme-options-theme($theme);
+    @include dips-material-color-picker-theme($theme);
+    @include dips-widget-theme($theme);
+
+    // Theming for 3rd party components
+    @include ngx-datatable-theme($theme);
+}
+

@@ -1,0 +1,132 @@
+<!-- SIDE PANEL -->
+<ng-container *ngIf="!dipsConfig.layout.sidepanel.hidden && dipsConfig.layout.sidepanel.position === 'left'">
+
+    <!-- PANEL CONTENT -->
+
+</ng-container>
+<!-- / SIDE PANEL -->
+
+<div id="main">
+
+    <!-- TOOLBAR: Above fixed -->
+    <ng-container *ngIf="dipsConfig.layout.toolbar.position === 'above-fixed'">
+        <ng-container *ngTemplateOutlet="toolbar"></ng-container>
+    </ng-container>
+    <!-- / TOOLBAR: Above fixed -->
+
+    <div id="container-1" class="container" dipsPerfectScrollbar
+         [dipsPerfectScrollbarOptions]="{suppressScrollX: true, updateOnRouteChange : true}">
+
+        <!-- TOOLBAR: Above static -->
+        <ng-container *ngIf="dipsConfig.layout.toolbar.position === 'above-static'">
+            <ng-container *ngTemplateOutlet="toolbar"></ng-container>
+        </ng-container>
+        <!-- / TOOLBAR: Above static -->
+
+        <div id="container-2" class="container">
+
+            <!-- NAVBAR: Left -->
+            <ng-container *ngIf="dipsConfig.layout.navbar.position === 'left'">
+                <ng-container *ngTemplateOutlet="leftNavbar"></ng-container>
+            </ng-container>
+            <!-- / NAVBAR: Left -->
+
+            <div id="container-3" class="container">
+
+                <!-- TOOLBAR: Below -->
+                <ng-container *ngIf="dipsConfig.layout.toolbar.position === 'below'">
+                    <ng-container *ngTemplateOutlet="toolbar"></ng-container>
+                </ng-container>
+                <!-- / TOOLBAR: Below -->
+
+                <!-- CONTENT -->
+                <content></content>
+                <!-- / CONTENT -->
+
+                <!-- FOOTER: Below -->
+                <ng-container *ngIf="dipsConfig.layout.footer.position === 'below'">
+                    <ng-container *ngTemplateOutlet="footer"></ng-container>
+                </ng-container>
+                <!-- / FOOTER: Below -->
+
+            </div>
+
+            <!-- NAVBAR: Right -->
+            <ng-container *ngIf="dipsConfig.layout.navbar.position === 'right'">
+                <ng-container *ngTemplateOutlet="rightNavbar"></ng-container>
+            </ng-container>
+            <!-- / NAVBAR: Right -->
+
+        </div>
+
+        <!-- FOOTER: Above static -->
+        <ng-container *ngIf="dipsConfig.layout.footer.position === 'above-static'">
+            <ng-container *ngTemplateOutlet="footer"></ng-container>
+        </ng-container>
+        <!-- FOOTER: Above static -->
+
+    </div>
+
+    <!-- FOOTER: Above fixed -->
+    <ng-container *ngIf="dipsConfig.layout.footer.position === 'above-fixed'">
+        <ng-container *ngTemplateOutlet="footer"></ng-container>
+    </ng-container>
+    <!-- FOOTER: Above fixed -->
+
+</div>
+
+<!-- SIDE PANEL -->
+<ng-container *ngIf="!dipsConfig.layout.sidepanel.hidden && dipsConfig.layout.sidepanel.position === 'right'">
+
+    <!-- PANEL CONTENT -->
+
+</ng-container>
+<!-- / SIDE PANEL -->
+
+<!-- QUICK PANEL -->
+<dips-sidebar name="quickPanel" position="right" class="quick-panel">
+    <quick-panel></quick-panel>
+</dips-sidebar>
+<!-- / QUICK PANEL -->
+
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- @ PARTIALS                                                                                            -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+<!-- TOOLBAR -->
+<ng-template #toolbar>
+    <toolbar *ngIf="!dipsConfig.layout.toolbar.hidden"
+             [ngClass]="dipsConfig.layout.toolbar.customBackgroundColor === true ? dipsConfig.layout.toolbar.position + ' ' + dipsConfig.layout.toolbar.background : dipsConfig.layout.toolbar.position">
+    </toolbar>
+</ng-template>
+<!-- / TOOLBAR -->
+
+<!-- FOOTER -->
+<ng-template #footer>
+    <footer *ngIf="!dipsConfig.layout.footer.hidden"
+            [ngClass]="dipsConfig.layout.footer.customBackgroundColor === true ? dipsConfig.layout.footer.position + ' ' + dipsConfig.layout.footer.background : dipsConfig.layout.footer.position">
+    </footer>
+</ng-template>
+<!-- / FOOTER -->
+
+<!-- LEFT NAVBAR -->
+<ng-template #leftNavbar>
+    <dips-sidebar name="navbar" class="navbar-dips-sidebar"
+                  [folded]="dipsConfig.layout.navbar.folded"
+                  lockedOpen="gt-md"
+                  *ngIf="!dipsConfig.layout.navbar.hidden">
+        <navbar [variant]="dipsConfig.layout.navbar.variant" class="left-navbar"></navbar>
+    </dips-sidebar>
+</ng-template>
+<!-- / LEFT NAVBAR -->
+
+<!-- RIGHT NAVBAR -->
+<ng-template #rightNavbar>
+    <dips-sidebar name="navbar" position="right" class="navbar-dips-sidebar"
+                  [folded]="dipsConfig.layout.navbar.folded"
+                  lockedOpen="gt-md"
+                  *ngIf="!dipsConfig.layout.navbar.hidden">
+        <navbar [variant]="dipsConfig.layout.navbar.variant" class="right-navbar"></navbar>
+    </dips-sidebar>
+</ng-template>
+<!-- / RIGHT NAVBAR -->

@@ -1,0 +1,122 @@
+<div class="tablero-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogoTitulo}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom" fxLayout="column" fxLayoutAlign="center center">
+            <div class="dato-nombre mt-8">{{habitacion.nombre}}</div>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center end">
+            <div class="dato-nombre mt-8" *ngIf="dato.estado != 'A'">{{precio| currency:'$ '}}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" dipsPerfectScrollbar>
+
+        <form [formGroup]="datoForm">
+
+            
+            <div fxLayout="row" fxLayoutAlign="start center" *ngIf="cierrePromo() == true">
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Promo</mat-label>
+                    <mat-select formControlName="promoUID" (selectionChange)="eventoPromo($event)">
+                        <mat-option *ngFor="let promo of listPromo" [value]="promo.uid" >
+                            {{promo.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">monetization_on</mat-icon> 
+                </mat-form-field> 
+            </div>
+
+            <!-- ABONADO -->
+            <div fxLayout="row" fxLayoutAlign="start start" *ngIf="cierrePagado() == false">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Pago</mat-label>
+                    <mat-icon matSuffix class="secondary-text">money</mat-icon>
+                    <input matInput placeholder="Monto Abonado" 
+                           name="abonado" 
+                           formControlName="abonado" 
+                           type="number">
+                    <span matPrefix>$&nbsp;</span>       
+                </mat-form-field>
+            </div>
+
+            <!-- VUELTO -->
+            <!-- <div fxLayout="row" fxLayoutAlign="start start" *ngIf="cierrePagado() == false">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Vuelto</mat-label>
+                    <input matInput placeholder="Vuelto" 
+                           name="vuelto" 
+                           formControlName="vuelto"> 
+                </mat-form-field>
+            </div> -->
+
+            <!-- NOTAS -->
+            <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Notas</mat-label>
+                    <textarea name="nota" formControlName="nota" matInput type="text" max-rows="4"></textarea>
+                </mat-form-field>
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button 
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['cancel',datoForm])"
+                aria-label="Cancelar"
+                matTooltip="Cancelar">
+            CANCELAR
+        </button>
+
+        <button *ngIf="accion === 'pagar'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['pagar',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="Pagar">
+            PAGAR
+        </button>
+
+        <button *ngIf="accion === 'alojar'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['alojar',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="Alojar"
+                matTooltip="Alojar">
+            INGRESAR
+        </button>
+
+        <button *ngIf="accion === 'limpia'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['limpia',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="Limpia"
+                matTooltip="Limpia">
+            Limpieza Terminada
+        </button>
+
+        <button *ngIf="accion === 'cerrar'"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['cerrar',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="Cerrar"
+                matTooltip="Cerrar">
+            EGRESAR
+        </button>
+
+    </div>
+</div>

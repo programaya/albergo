@@ -1,0 +1,76 @@
+<div id=items>
+    <mat-datasource [dataSource]="source">
+        <mat-table class="items-table"
+                       #table [dataSource]="source"
+                       matSort
+                       start="desc" 
+                       #sort="matSort"
+                       [@animateStagger]="{value:'50'}"
+                       dipsPerfectScrollbar>
+
+            <!-- Nombre    -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Tiempo    -->
+            <ng-container matColumnDef="tiempo">
+                <mat-header-cell *matHeaderCellDef>Tiempo</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.permanencia}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- email -->
+            <ng-container matColumnDef="precio">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Precio</mat-header-cell>
+                <mat-cell *matCellDef="let item" fxHide fxShow.gt-md>
+                    <p class="text-truncate">
+                        {{item.importe}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Buttons Column -->
+            <ng-container matColumnDef="botones">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="end center">
+                        <!-- <button mat-icon-button (click)="$event.stopPropagation();toggleStar(contact.id)" aria-label="Toggle star">
+                            <mat-icon class="amber-fg" *ngIf="user.starred.includes(contact.id)">star</mat-icon>
+                            <mat-icon class="secondary-text" *ngIf="!user.starred.includes(contact.id)">star_border</mat-icon>
+                        </button> -->
+
+                        <button mat-icon-button [matMenuTriggerFor]="masMenu" aria-label="Mas"
+                                (click)="$event.stopPropagation();">
+                            <mat-icon class="secondary-text">more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #masMenu="matMenu">
+                            <button mat-menu-item aria-label="borra" (click)="borraItem(fila)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Borrar</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                    class="fila"
+                    (click)="editaItem(fila)"
+                    matRipple
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+            </mat-row>
+        </mat-table>
+    </mat-datasource>
+</div>
+
+<!-- [ngClass]="{'accent-50':checkboxes[contact.id]}" -->
+
+

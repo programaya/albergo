@@ -1,0 +1,64 @@
+<div id=items>
+    <mat-datasource [dataSource]="source">
+        <mat-table class="items-table"
+                       #table [dataSource]="source"
+                       matSort
+                       start="desc" 
+                       #sort="matSort"
+                       [@animateStagger]="{value:'50'}"
+                       dipsPerfectScrollbar>
+
+            <!-- Avatar -->
+            <ng-container matColumnDef="avatar">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <img *ngIf="item.foto" class="avatar" [alt]="item.nombre" [src]="item.foto"/>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Estado    -->
+            <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p *ngIf="item.estado != 'Activo'" class="text-truncate warn">{{item.estado}}</p>
+                </mat-cell>
+            </ng-container>
+            
+            <!-- Nombre    -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- email -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md mat-sort-header>EMail</mat-header-cell>
+                <mat-cell *matCellDef="let item" fxHide fxShow.gt-md>
+                    <p class="email text-truncate">
+                        {{item.email}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Cargo -->
+            <ng-container matColumnDef="titulo">
+                <mat-header-cell *matHeaderCellDef>Cargo</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate font-weight-600">{{item.titulo}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                    class="fila"
+                    (click)="editaItem(fila)"
+                    matRipple
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+            </mat-row>
+        </mat-table>
+    </mat-datasource>
+</div>
+
+

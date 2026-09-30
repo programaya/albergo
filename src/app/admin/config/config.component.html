@@ -1,0 +1,236 @@
+<div id="dato" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Configuración General
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Detalle</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BOTONES HEADER -->
+            <div fxLayout="column" fxLayoutAlign="space-between center">
+
+                <button mat-raised-button
+                        class="save-dato-button"
+                        [disabled]="datoForm.invalid || datoForm.pristine"
+                        (click)="salvaDato()">
+                    <span>SALVAR</span>
+                </button>
+
+            </div>
+            <!-- / BOTONES HEADER -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                
+
+                <form name="datoForm" [formGroup]="datoForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Sensibilidad">
+
+                            <div class="tab-content p-24" dipsPerfectScrollbar>
+
+                                <div class="h1">
+                                    Sensibilidad de Sensores
+                                </div>
+                        
+                                <p class="pt-16 pb-32">
+                                    Ajuste con que nivel de sensibilidad el sensor detecta un movimiento o la ausencia de movimiento.
+                                    Como el Sensor cubre los 360 grados volumétricos una muy alta sensibilidad puede llegar a causar que el mismo detecte movimientos fuera de la habitación, por ej: Personas caminando por el pasillo que comunica las habitaciones.
+                                    Ajuste el nivel de sensibilidad ideal para su infraestructura, siempre es recomendable que tenga la mayor sensibilidad posible.
+                                </p>
+
+                                <!-- Sensibilidad Habitacion -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-25-p">
+                                    <mat-label>Sensibilidad Sensor Habitación</mat-label>
+                                    <mat-select formControlName = "sensibilidadCuarto">
+                                        <mat-option *ngFor="let sensibilidad of sensibilidades" [value]= sensibilidad.value>
+                                            {{sensibilidad.nombre}}
+                                        </mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <!-- Sensibilidad Cochera -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-25-p">
+                                    <mat-label>Sensibilidad Sensor Cochera</mat-label>
+                                    <mat-select formControlName = "sensibilidadGarage">
+                                        <mat-option *ngFor="let sensibilidad of sensibilidades" [value]= sensibilidad.value>
+                                            {{sensibilidad.nombre}}
+                                        </mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Ocupación">
+
+                            <div class="tab-content p-24" dipsPerfectScrollbar>
+
+                                <div class="h1">
+                                    Ocupación
+                                </div>
+                        
+                                <p class="pt-16 pb-32">
+                                    Tiempo a partir del cual considera que la habitación (o cochera) se encuentra ocupada por los pasajeros.
+                                    Con el ajuste de este tiempo se elimina la posibilidad de error por breves ingresos del personal a la habitación.
+                                    Los tiempos deben fijarse en Minutos
+                                </p>
+
+                                <div class="h2">
+                                    Habitación
+                                </div>
+                                <p></p>
+
+                                <!-- Ocupacion Habitacion -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo Habitación Ocupación</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoCuartoOn"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                                <div class="h2">
+                                    Cochera
+                                </div>
+                                <p></p>
+
+                                <!-- Ocupacion Cochera -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo Cochera Ocupación</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoGarageOn"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab> 
+
+                        <mat-tab label="Tiempos">
+
+                            <div class="tab-content p-24" dipsPerfectScrollbar>
+
+                                <div class="h1">
+                                    Tiempos de Periodos
+                                </div>
+                        
+                                <p class="pt-16 pb-32">
+                                    Son los lapsos de tiempos de estadía de los pasajeros. 
+                                    El tiempo Standard se refiere al tiempo de Periodo que se considera que la habitación es ocupada por los pasajeros.
+                                    El tiempo de Aviso es el tiempo anterior al Periodo donde se le notifica a los pasajeros que su periodo de tiempo esta por concluir.
+                                    El tiempo de Gracia es el tiempo posterior al Periodo que se le da al pasajero para desocupar la habitación luego del cual se cobra un sobre precio.
+                                    Los tiempos se establecen en Minutos.
+                                </p>
+
+                                <!-- Nombre -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo Standard</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoStandard"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                                <!-- Nombre -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo Aviso</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoAviso"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                                <!-- Nombre -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo de Gracia</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoGracia"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Mantenimiento">
+
+                            <div class="tab-content p-24" dipsPerfectScrollbar>
+
+                                <div class="h1">
+                                    Tiempos de Máximos de Mantenimientos
+                                </div>
+                        
+                                <p class="pt-16 pb-32">
+                                    El tiempo de Sucia se refiere al tiempo máximo permitido al personal para mantener una habitación sucia luego de haber sido ocupada. 
+                                    El tiempo de Limpieza es el máximo tiempo que el personal tiene para realizar la tarea de limpieza de la habitación.
+                                    Con estos tiempos se ajustan la eficiencia del personal y la velocidad con habitación vuelve a estar disponible.
+                                    Los tiempos se fijan en Minutos.
+                                </p>
+
+                                <!-- LIMPIEZA -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo de Limpieza</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoLimpieza"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                                <!-- SUCIA -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tiempo que puede estar Sucia</mat-label>
+                                    <input matInput 
+                                            formControlName="tiempoSucia"
+                                            type="number"
+                                            required>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+ 
+                    </mat-tab-group>
+
+                </form> 
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

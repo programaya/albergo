@@ -1,0 +1,62 @@
+<div class="tablero-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogoTitulo}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" dipsPerfectScrollbar>
+
+        <form [formGroup]="datoForm">
+
+            <!-- IMPORTE -->
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Importe</mat-label>
+                    <mat-icon matSuffix class="secondary-text">money</mat-icon>
+                    <input matInput placeholder="+ Ingreso, - Salida" 
+                           name="importe" 
+                           formControlName="importe" 
+                           type="number"
+                           required>
+                    <span matPrefix>$&nbsp;</span>       
+                </mat-form-field>
+            </div>
+
+            <!-- NOTAS -->
+            <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Notas</mat-label>
+                    <textarea name="nota" formControlName="nota" matInput type="text" max-rows="4"></textarea>
+                </mat-form-field>
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button 
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['cancel',datoForm])"
+                aria-label="Cancelar"
+                matTooltip="Cancelar">
+            CANCELAR
+        </button>
+
+        <button mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['asiento',datoForm])"
+                [disabled]="datoForm.invalid"
+                aria-label="Asentar"
+                matTooltip="Asentar">
+            ASENTAR
+        </button>
+
+    </div>
+</div>

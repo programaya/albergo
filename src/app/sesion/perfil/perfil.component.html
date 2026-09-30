@@ -1,0 +1,194 @@
+<div id="profile" class="page-layout simple tabbed">
+
+   <!-- HEADER -->
+    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+         fxLayoutAlign.gt-sm="space-between end">
+
+        <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+             fxLayoutAlign.gt-sm="start center">
+
+             <button mat-icon-button class="primary mr-0 mr-sm-16" (click)="retornaPagAnterior()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <img *ngIf="usuario.foto" class="profile-image avatar huge" src="{{ usuario.foto }}"
+                 [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+
+            <div *ngIf="usuario.nombre" class="name" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{ usuario.nombre }}
+            </div>
+        </div>
+
+        <div class="actions"
+                fxLayout="row" 
+                fxLayoutAlign="end center">
+            <button mat-fab
+                    class="light-green-800" 
+                    [@animate]="{value:'*',params:{delay:'200ms'}}"
+                    [disabled]="perfilForm.invalid || perfilForm.pristine" 
+                    aria-label="Aceptar" (click)="salvaDato()">
+                <mat-icon>check</mat-icon>
+            </button> 
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+
+    <div class="content p-24">
+
+        <!-- FORM PERFIL -->
+        <form name="perfilForm" 
+                [formGroup]="perfilForm"
+                class="mb-24"
+                fxLayout="column" 
+                fxLayoutAlign="start" 
+                fxLayout.gt-md="row"
+                fxFlex="1 0 auto">
+
+            <!-- USUARIO FORMULARIO -->
+            <div class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start">
+                <div class="h2 mb-24">Perfil Usuario</div>
+
+                <!-- NOMBRE -->
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" required>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <mat-error>Nombre es requerido!</mat-error>
+                    </mat-form-field> 
+
+                </div>
+
+                <!-- FOTO -->
+                <!-- <div fxLayout="column" fxLayoutAlign="start start">
+
+                    <img *ngIf="usuario.foto" 
+                                class="profile-image avatar huge" 
+                                src="{{ usuario.foto }}"
+                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                
+                    <img *ngIf="!usuario.foto" 
+                                class="profile-image avatar huge" 
+                                src="assets/images/avatars/noAvatar.png"
+                                (click)="cambiaAvatar()"
+                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"> -->
+                
+                    <!-- <button mat-icon-button (click)="cambiaAvatar()">
+                        <mat-icon>edit</mat-icon>
+                    </button> -->
+                <!-- </div> -->
+
+                <!-- TIPO ADMIN -->
+                <div class="mt-24"> 
+                    <mat-label>Cuenta Empresa</mat-label>
+                    <mat-radio-group fxLayout="column" fxLayoutAlign="space-between start" formControlName="tipoAdmin">
+                        <mat-radio-button disableRipple value="true">Administrador</mat-radio-button>
+                        <mat-radio-button disableRipple value="false">Usuario</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <!-- / TIPO ADMIN -->
+            </div>
+            <!-- USUARIO FORMULARIO -->
+
+            <!-- CUENTA EMPRESA -->
+            <div class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start">
+                <div class="h2 mb-24">Cuenta Empresa</div>
+
+                <!-- BLOCK ADMIN     -->
+                <div id="block-admin">
+                    <!-- NOMBRE CUENTA -->
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Nombre Cuenta</mat-label>
+                            <input matInput formControlName="cuentaNombre" >
+                            <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                        </mat-form-field> 
+
+                    </div>
+
+                    <!-- ESLOGAN -->
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Eslogan</mat-label>
+                            <input matInput formControlName="cuentaEslogan">
+                            <mat-icon matSuffix class="secondary-text">message</mat-icon>
+                        </mat-form-field>
+
+                    </div> -->
+
+                    <!-- FOTO CUENTA -->
+                    <!-- <div fxLayout="row" fxLayoutAlign="start end">
+
+                        <img *ngIf="cuenta.foto" 
+                                    class="profile-image avatar huge" 
+                                    src="{{ cuenta.foto }}"
+                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    
+                        <img *ngIf="!cuenta.foto" 
+                                    class="profile-image avatar huge" 
+                                    src="assets/images/avatars/noAvatar.png"
+                                    (click)="cambiaAvatar()"
+                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    
+                        <button mat-icon-button (click)="cambiaAvatar()">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                                    
+                    </div> -->
+
+                    <!-- COMPARTE CUENTA -->
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <mat-slide-toggle disableRipple class="mat-override" formControlName="cuentaComparte">
+                            Cuenta Compartida
+                        </mat-slide-toggle>
+               
+                    </div>
+                </div> 
+                <!-- / BLOCK ADMIN -->
+
+                <!-- BLOCK USUARIO -->
+                <div id="block-user">
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Email Cuenta Asociada</mat-label>
+                            <input matInput formControlName="emailCuenta">
+                            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                            <!-- <mat-error *ngIf="f.email.errors && f.email.errors.required">
+                                Email is required
+                            </mat-error>
+                            <mat-error *ngIf="f.email.errors && f.email.errors.email">
+                                Please enter a valid email address
+                            </mat-error> -->
+                       </mat-form-field>
+                    </div>
+                    <div class="error" fxLayout="row" fxLayoutAlign="center center">
+                        <mat-error *ngIf="errorPerfil != ''">
+                            {{ errorPerfil}}
+                        </mat-error>
+    
+                    </div>
+    
+
+                    <button mat-raised-button color="accent" class="submit-button" aria-label="BUSCA CUENTA"
+                            [disabled]="perfilForm.invalid" (click)="buscaCuenta()">
+                        BUSCA CUENTA
+                    </button>
+
+
+                </div>
+                <!-- / BLOCK USUARIO -->
+
+            </div>
+            <!-- / CUENTA EMPRESA -->
+
+        </form>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

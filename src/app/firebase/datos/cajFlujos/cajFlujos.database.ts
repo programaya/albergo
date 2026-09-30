@@ -1,0 +1,161 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/compat/firestore';
+
+import { CajFlujos, CajFlujosListadoRequest, CajFlujosListadoItem } from './cajFlujos.model';
+import { DipsUtils } from '../../../../@dips/utils';
+import { Cajas } from '../cajas';
+
+import { DipsUsuarioService } from 'src/@dips/services/usuario.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CajFlujosDatabase {
+
+  // Datos Generales MODIFICAR
+  coleccion: any = 'cajFlujos';  // poner la coleccion y el nombre correspondiente
+  orden: any = 'fecha';
+
+  // Usuario 
+  private usuario: any;  
+
+  /**
+   * La Database traslada los requerimientos de Datasource a el backend.
+   */
+  constructor(
+      private db: AngularFirestore,
+      private _dipsUsuarioService: DipsUsuarioService,
+      ) {
+
+        // Usuario 
+        this._dipsUsuarioService.getUsuario()
+              .subscribe((usuario: any) => {
+                  this.usuario = usuario;
+        });
+
+      }
+
+  /**
+   * simple
+   * @param id 
+   * 
+   * busca un determinado documento segun su identificacion
+   */
+  simple(id: string)  {
+
+    return this.db.collection('cuentas').doc(this.usuario.idCuenta).collection<CajFlujos>(this.coleccion).doc(id).snapshotChanges()
+
+  }
+
+  /**
+   * listado
+   * @param args posee los argumentos para poder filtrar y paginar los registros
+   * 
+   * permite buscar los registros que se listaran en una tabla
+   *
+   */
+  listado(args?: CajFlujosListadoRequest) {
+
+    return this.db
+      .collection('cuentas').doc(this.usuario.idCuenta)
+      .collection<CajFlujos>( this.coleccion, ref => {
+        let query: CollectionReference | Query = ref;
+
+
+        // buscar
+        if (args!.buscar) {
+          query = query.where('claves', 'array-contains', args!.buscar)
+        }
+
+        // filtro
+        if (args!.filtro) {
+          query = query.where('apellido', '==', args!.filtro);
+        }
+        
+        // sorting
+        if (!args!.orderBy){
+          args!.orderBy = this.orden;    // orden por defecto
+        }
+
+        query = query.orderBy(args!.orderBy!, args!.orderDir);
+
+        // pagination
+        if (args!.pageSize || args!.limit) {
+          if (args!.startAt) {
+            query = query.startAt(...args!.startAt);
+          }
+          if (args!.startAfter) {
+            query = query.startAfter(...args!.startAfter);
+          }
+          if (args!.endAt) {
+            query = query.endAt(...args!.endAt);
+          }
+          if (args!.endBefore) {
+            query = query.endBefore(...args!.endBefore);
+          }
+
+          let limite = args!.limit || args!.pageSize || 0
+          query = query.limit(limite);
+        }
+
+        return query;
+      })
+      .snapshotChanges();
+  }
+
+  /**
+   * 
+   * =====================================================
+   * Funcions de ingreso actualizacion y borrado
+   * =====================================================
+   */
+  async actualizaDato(idCaja: any, id:any, info: any) {
+    return await this.db.collection('cuentas').doc(this.usuario.idCuenta).collection<CajFlujos>(this.coleccion).doc(id).update(info);
+  }
+
+  async ingresaDato(idCaja: any, info: any) {
+    return await this.db.collection('cuentas').doc(this.usuario.idCuenta).collection<Cajas>('cajas').doc(idCaja).collection<CajFlujos>(this.coleccion).add(info);
+  }
+  
+  async borraDato(id: string) {
+    return await this.db.collection('cuentas').doc(this.usuario.idCuenta).collection<CajFlujos>(this.coleccion).doc(id).delete();
+  }
+
+
+  /**
+   *  generalClaves
+   * 
+   * @param nombre 
+   * @param apellido 
+   * @param email 
+   * 
+   * los parametros se ajustan segun las necesidades de cada base de datos
+   * esta funcion permite crear claves de busqueda para multiples campos
+   * 
+   */
+  generaClaves(nombre: string, apellido: string, email: string){ // se define los campos de busqueda
+
+    // // define posible datos faltantes agregar tantos como haga falta
+    // const campo1 = nombre.length > 0 ? `${nombre}` : '';
+    // const campo2 = apellido.length > 0 ? `${apellido}` : '';
+    // const campo3 = email.length > 0 ? `${email}` : '';
+
+    // // se define las mezclas que se desee tener en cuenta
+    // const claveNombreCompleto = DipsUtils.creaClaves(`${nombre} ${apellido}`);
+    // const claveApellidoPrimero = DipsUtils.creaClaves(`${apellido} ${nombre}`);
+    // const soloEmail = DipsUtils.creaClaves(`${email}`);
+
+    // // retorna array
+    // return [
+    //   ...new Set([
+    //     '',
+    //     ...claveNombreCompleto,
+    //     ...claveApellidoPrimero,
+    //     ...soloEmail
+    //   ])
+    // ];
+  }
+
+}

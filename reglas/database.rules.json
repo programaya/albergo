@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "cuentas": {
+        // Solo Autentificados 
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null"
+     
+    },
+   "test_cuentas": {
+        // Solo Autentificados 
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null"
+     
+    },
+
+  }
+}

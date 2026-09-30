@@ -1,0 +1,90 @@
+<div class="tablero-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogoTitulo}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom" fxLayout="column" fxLayoutAlign="center center">
+            <div class="dato-nombre mt-8">{{dato.nombre}}</div>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center end">
+            <div class="dato-nombre mt-8" *ngIf="dato.estado == 4 || dato.estado == 1">{{info.precio| currency:'$ '}}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" dipsPerfectScrollbar>
+
+        <!-- BLOCK OCUPACION -->
+        <div id="block-ocupacion">
+            <form [formGroup]="datoForm">
+
+                <!-- PROMO -->
+                <div fxLayout="row" fxLayoutAlign="start center">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Promo</mat-label>
+                        <mat-select formControlName="promoUID" (selectionChange)="eventoPromo($event)">
+                            <mat-option *ngFor="let promo of listPromo" [value]="promo.uid" >
+                                {{promo.nombre}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="secondary-text">monetization_on</mat-icon> 
+                    </mat-form-field> 
+                </div>
+
+            </form>
+        </div>
+        <!-- /BLOCK OCUPACION -->
+
+        <!-- BLOCK ETAPA -->
+        <div id="block-etapa">
+            <button 
+                class="mr-8" 
+                (click)="matDialogRef.close(['boton',datoForm])"
+                mat-raised-button
+                type="button" 
+                color="accent">
+                {{botonAccion}}
+            </button>
+
+        </div>
+        <!-- /BLOCK ETAPA -->
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button 
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['cancel',datoForm])"
+                aria-label="Cancelar"
+                matTooltip="Cancelar">
+            CANCELAR
+        </button>
+
+        <button *ngIf="dato.estado === 4"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['checkIN',datoForm,info])"
+                [disabled]="datoForm.invalid"
+                aria-label="Check IN"
+                matTooltip="Check IN">
+            CHECK IN
+        </button>
+
+        <button *ngIf="dato.estado === 1"
+            class="mr-8" 
+            (click)="matDialogRef.close(['checkOUT',datoForm,info])"
+            mat-raised-button
+            type="button" 
+            color="accent">
+            {{botonAccion}}
+        </button>
+
+    </div>
+</div>

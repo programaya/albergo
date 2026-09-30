@@ -1,0 +1,92 @@
+<div id=items>
+    <mat-datasource [dataSource]="source">
+        <mat-table class="items-table"
+                       #table [dataSource]="source"
+                       matSort
+                       start="desc" 
+                       #sort="matSort"
+                       [@animateStagger]="{value:'50'}"
+                       dipsPerfectScrollbar>
+
+            <!-- Servicio -->
+            <ng-container matColumnDef="servicios">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="start">
+                        <mat-icon *ngIf="fila.pagado > 0">attach_money</mat-icon>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+            <!-- Estado    -->
+            <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <mat-icon [ngStyle]="{'color': colorEstado(item.estado)}" *ngIf="item.estado == 3">brush</mat-icon>
+                    <mat-icon [ngStyle]="{'color': colorEstado(item.estado)}" *ngIf="item.estado == 2">delete</mat-icon>
+                    <mat-icon [ngStyle]="{'color': colorEstado(item.estado)}" *ngIf="item.estado == 0">settings</mat-icon>
+                </mat-cell> 
+            </ng-container>
+            
+            <!-- Nombre    -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef>Habitación</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- ENTRADA -->
+            <ng-container matColumnDef="entrada">
+                <mat-header-cell *matHeaderCellDef>Entrada</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate" *ngIf="item.horaInicio != 0">{{item.horaInicio |date:"shortTime"}}</p>
+                </mat-cell>
+           </ng-container>
+
+           <!-- SALIDA -->
+           <!-- <ng-container matColumnDef="salida">
+                <mat-header-cell *matHeaderCellDef>Salida</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate" *ngIf="item.horaFin != 0">{{item.horaFin |date:"shortTime"}}</p>
+                </mat-cell>
+           </ng-container> -->
+
+           <!-- CUARTO -->
+           <ng-container matColumnDef="cuarto">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="start">
+                        <mat-icon *ngIf="fila.cuarto == true">hotel</mat-icon>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+            <!-- CUARTO -->
+            <ng-container matColumnDef="cochera">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let fila">
+                    <div fxFlex="row" fxLayoutAlign="start">
+                        <mat-icon *ngIf="fila.garage == true">directions_car</mat-icon>
+                    </div>
+
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+            <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                    class="fila"
+                    (click)="editaItem(fila)"
+                    matRipple
+                    [@animate]="{value:'*',params:{y:'100%'}}"
+                    [ngStyle]="{'background-color': seleccionColor(fila)}">
+            </mat-row>
+        </mat-table>
+    </mat-datasource>
+</div>
+
+
+

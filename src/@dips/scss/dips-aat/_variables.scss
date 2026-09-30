@@ -1,0 +1,97 @@
+// Sombras
+$aat-shadow: 0 2px 9px 0 rgba(0, 0, 0, .06);
+$aat-shadow-hover: 0 2px 9px 0 rgba(0, 0, 0, .5);
+$aat-shadow-container: 0 2px 4px 0 rgba(0, 0, 0, .32);
+$aat-shadow-inset: inset 0 0 15px 0 rgba(0, 0, 0, .2);
+
+// Colores
+$aat-violet: #4e0192;
+$aat-pink: #ff87f3;
+$aat-pink2: #d5a5ff;
+$aat-pink3: #f2e3ff;
+$aat-beige: #f4f3ef;
+$aat-beige2: #fff3f4;
+$aat-aqua: #50e3c2;
+$aat-purple: #9012fe;
+$aat-purple2: #824e94;
+$aat-grey: #9b9b9b;
+$aat-grey2: #f6f6f6;
+$aat-grey3: #dbdbdb;
+$aat-grey4: #e1e1e1;
+$aat-grey5: #555;
+$aat-grey6: #f4f3ef;
+$aat-grey7: #f0f0f0;
+$aat-grey8: #4a4a4a;
+$aat-red: #ff001f;
+$aat-red2: #d0011b;
+$aat-yellow: #f8e81c;
+$aat-orange: #f6a623;
+$aat-orange2: #f5a623;
+$aat-green: #b8e986;
+$aat-green2: #7ed321;
+$aat-white: #fff;
+$aat-black: #000;
+$aat-blue: #2604af;
+$aat-blue-fb: #3b5998;
+$aat-skyblue: #04abff;
+
+// Text0s
+$aat-font-family: 'Lato', 'Helvetica', sans-serif;
+
+$aat-font-size-xxxlg: 57px;
+$aat-font-size-xxlg: 40px;
+$aat-font-size-xlg: 32px;
+$aat-font-size-lg: 22px;
+$aat-font-size-md: 17px;
+$aat-font-size-sm: 14px;
+$aat-font-size-xs: 12px;
+$aat-font-size-xxs: 9px;
+
+$aat-letter-spacing-lg: 2.3px;
+$aat-letter-spacing-md: 2.1px;
+$aat-letter-spacing-sm: 1.8px;
+$aat-letter-spacing-xs: 1.5px;
+$aat-letter-spacing-xxs: 1.3px;
+$aat-letter-spacing-xxxs: 1.1px;
+
+
+$aat-body-bg-color: $aat-beige;
+
+$aat-nav-bg-top-color: $aat-violet;
+$aat-nav-bg-btm-color: $aat-pink;
+
+$aat-inactive-bg-color: $aat-grey3;
+
+$aat-card-bg-color: $aat-white;
+$aat-card-txt-color: $aat-purple;
+
+$aat-form-label-big-color: $aat-purple2;
+$aat-form-label-color: $aat-grey;
+$aat-form-input-color: $aat-grey8;
+$aat-form-input-broder-color: $aat-grey4;
+$aat-form-input-broder-radius: 4px;
+$aat-form-checkbox-radio-color: $aat-purple2;
+$aat-form-error-color: $aat-red2;
+$aat-form-error-bkg-color: $aat-beige2;
+$aat-form-tag-color: $aat-purple;
+$aat-form-slider-color: $aat-purple;
+
+$aat-shadow: 0 2px 9px 0 rgba(0, 0, 0, .06);
+$aat-shadow-hover: 0 2px 9px 0 rgba(0, 0, 0, .5);
+$aat-shadow-container: 0 2px 4px 0 rgba(0, 0, 0, .32);
+$aat-shadow-inset: inset 0 0 15px 0 rgba(0, 0, 0, .2);
+
+
+// Measures
+$aat-checkbox-radio-size: 12px;
+$aat-input-height: 38px;
+$aat-separation: 15px;
+$aat-side-menu-width: 260px;
+$aat-top-navbar-breakpoint: 910px;
+
+// Images - Preload images
+$aat-preload-image-bg: rgba(darken($aat-white, 10), .25);
+
+// Images - Preload images - Spinner on load
+$aat-spinner-size: 28px;
+$aat-spinner-color: $aat-grey;

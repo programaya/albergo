@@ -1,0 +1,199 @@
+
+<div id="dato" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                 <button mat-icon-button class="mr-0 mr-sm-16" (click)="retornaPagAnterior()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <!-- <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="product.images[0]" [src]="product.images[0].url">
+                    <img *ngIf="!product.images[0]" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div> -->
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Detalle de Caja
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="datoCaja.cerrada === true">
+                        <span>CERRADA</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BOTONES HEADER -->
+    <!--            <div fxLayout="column" fxLayoutAlign="space-between center">
+
+                <button mat-raised-button
+                        class="save-dato-button">
+                    <span>AGREGAR</span>
+                </button>
+
+             <button mat-raised-button
+                class="save-dato-button"
+                [disabled]="datoForm.invalid"
+                *ngIf="pagTipo ==='nuevo'" (click)="sumaDato()">
+            <span>AGREGAR</span>
+        </button> -->
+
+
+            <!--     <button mat-icon-button 
+                        class="borra-dato-button"
+                        matTooltip="Borrar"
+                        [disabled]="datoForm.invalid"
+                        *ngIf="pagTipo ==='edita'" (click)="borraDato()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+                <button mat-raised-button
+                        class="save-dato-button"
+                        [disabled]="datoForm.invalid || datoForm.pristine"
+                        *ngIf="pagTipo ==='edita'" (click)="salvaDato()">
+                    <span>SALVAR</span>
+                </button> 
+
+            </div> -->
+            <!-- / BOTONES HEADER -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                
+
+                <!-- <form name="datoForm" [formGroup]="datoForm" class="product w-100-p" fxLayout="column" fxFlex> -->
+
+                    <!-- <mat-tab-group>
+
+                        <mat-tab label="Información Basica">
+
+                            <div class="tab-content p-24" dipsPerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput placeholder="Nombre"
+                                           formControlName="nombre"
+                                           required>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Product Images">
+                            <div id=items> -->
+                                <!-- <mat-datasource [dataSource]="detalle"> -->
+                                    <mat-table class="items-table"
+                                           #table [dataSource]="detalle"
+                                           matSort
+                                           start="desc" 
+                                           #sort="matSort"
+                                           [@animateStagger]="{value:'50'}"
+                                           dipsPerfectScrollbar>
+                    
+                                        <!-- FECHA -->
+                                        <ng-container matColumnDef="fecha">
+                                            <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.fecha | date:'short'}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- HABITACION -->
+                                        <ng-container matColumnDef="habitacion">
+                                            <mat-header-cell *matHeaderCellDef>Habitación</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.habitacion}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- PROMO -->
+                                        <ng-container matColumnDef="promo">
+                                            <mat-header-cell *matHeaderCellDef>Promo</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.promo}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+                                        
+                                        <!-- DETALLE -->
+                                        <ng-container matColumnDef="detalle">
+                                            <mat-header-cell *matHeaderCellDef>Detalle</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.detalle}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- INGRESO -->
+                                        <ng-container matColumnDef="importe">
+                                            <mat-header-cell *matHeaderCellDef>Importe</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.importe}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- SALDO -->
+                                        <ng-container matColumnDef="saldo">
+                                            <mat-header-cell *matHeaderCellDef>Saldo</mat-header-cell>
+                                            <mat-cell *matCellDef="let item">
+                                                <p class="text-truncate">{{item.saldo}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                    
+                                        <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                                            class="fila"
+                                             [routerLink]="'/principal/caja/form/'+fila.id"
+                                             matRipple>
+                                        </mat-row>
+                    
+                    
+                                    </mat-table>   
+                    
+                                <!-- </mat-datasource>    -->
+                            <!-- </div> -->
+<!--     
+                        </mat-tab> 
+
+                    </mat-tab-group> -->
+
+                <!-- </form>  -->
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+<!-- ADD CONTACT BUTTON -->
+<button mat-fab 
+        class="accent" 
+        id="add-contact-button"  
+        aria-label="agrega Informacion"
+        [disabled]="datoCaja.cerrada"
+        (click)="editaCaja()"
+        [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">
+    <mat-icon>add</mat-icon>
+</button>
+<!-- / ADD CONTACT BUTTON -->

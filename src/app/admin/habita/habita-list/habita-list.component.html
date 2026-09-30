@@ -1,0 +1,42 @@
+<div id=items>
+    <mat-datasource [dataSource]="source">
+        <mat-table class="items-table"
+                       #table [dataSource]="source"
+                       matSort
+                       start="desc" 
+                       #sort="matSort"
+                       [@animateStagger]="{value:'50'}"
+                       dipsPerfectScrollbar>
+
+            <!-- Checkbox Column -->
+
+            <!-- Nombre    -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- IMPORTE    -->
+            <ng-container matColumnDef="importe">
+                <mat-header-cell *matHeaderCellDef >Importe</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <p class="text-truncate">{{item.valor}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let fila; columns: displayedColumns;"
+                    class="fila"
+                    (click)="editaItem(fila)"
+                    matRipple
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+            </mat-row>
+        </mat-table>
+    </mat-datasource>
+</div>
+
+<!-- [ngClass]="{'accent-50':checkboxes[contact.id]}" -->
+
+

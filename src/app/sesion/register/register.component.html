@@ -1,0 +1,103 @@
+<div id="register" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+
+    <div id="register-intro" fxFlex fxHide fxShow.gt-xs>
+
+        <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <img src="assets/images/logos/dips.svg">
+        </div>
+
+        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+            Bienvenidos a Albergo !
+        </div>
+
+        <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+            Administración de Albergues Transitorios.
+        </div>
+
+    </div>
+
+    <div id="register-form-wrapper" dipsPerfectScrollbar
+         [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="register-form">
+
+            <div class="logo" fxHide.gt-xs>
+                <img src="assets/images/logos/dips.svg">
+            </div>
+
+            <div class="title">CREAR UNA CUENTA</div>
+
+            <form name="registerForm" [formGroup]="registerForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre">
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <mat-error>
+                        El Nombre es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                    <mat-error *ngIf="f.email.errors && f.email.errors.required">
+                        Email es requerido
+                    </mat-error>
+                    <mat-error *ngIf="f.email.errors && f.email.errors.email">
+                        Ingrese email valido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-error>
+                        Contraseña es requerida
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña (Confirmar)</mat-label>
+                    <input matInput type="password" formControlName="passwordConfirm">
+                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-error *ngIf="f.passwordConfirm.errors && f.passwordConfirm.errors.required">
+                        Confirmación Contraseña es requerida
+                    </mat-error>
+                    <mat-error *ngIf="f.passwordConfirm.errors && 
+                                        !f.passwordConfirm.errors.required &&
+                                        f.passwordConfirm.errors.passwordsNotMatching">
+                        Las Contraseñas deben coincidir
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="error" fxLayout="row" fxLayoutAlign="center center">
+                    <mat-error *ngIf="errorRegistro != ''">
+                        {{ 'REGISTRO.' + errorRegistro | translate }}
+                    </mat-error>
+
+                </div>
+
+                <!-- <div class="terms" fxLayout="row" fxLayoutAlign="center center">
+                    <mat-checkbox name="terms" aria-label="Accept" required>
+                        <span>Aceptar</span>
+                    </mat-checkbox>
+                    <a href="#">terminos y condiciones</a>
+                </div> -->
+
+                <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
+                        [disabled]="registerForm.invalid" (click)="registro(registerForm.value)">
+                    CREAR UNA CUENTA
+                </button>
+
+            </form>
+
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <span class="text">Ya posee una cuenta?</span>
+                <a class="link" [routerLink]="'/sesion/login'">Iniciar</a>
+            </div>
+        </div>
+    </div>
+</div>

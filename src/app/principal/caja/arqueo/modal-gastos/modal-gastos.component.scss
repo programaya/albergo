@@ -1,0 +1,120 @@
+// Contenedor del historial con scroll
+.mb-3 {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+// Estilos de la tabla de Angular Material
+table {
+    width: 100%;
+    background: transparent;
+
+    th.mat-mdc-header-cell {
+        background-color: #f1f3f4;
+        color: #3c4043;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    td.mat-mdc-cell {
+        font-size: 14px;
+        padding: 12px;
+        color: #202124;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    tr.mat-mdc-row:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+}
+
+// Clases utilitarias semánticas para los montos
+.text-success {
+    color: #1e7e34 !important;
+    font-weight: 500;
+}
+
+.text-danger {
+    color: #bd2130 !important;
+    font-weight: 500;
+}
+
+// Ajustes del formulario reactivo inferior
+form {
+    margin-top: 15px;
+
+    mat-form-field {
+        width: 100%;
+
+        // Reduce un poco el espaciado interno por defecto de Material para que sea más compacto
+        ::vmax-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none; // Oculta el espacio de error para que no salte el diseño al validar
+        }
+    }
+
+    // Centrado vertical del botón "+" respecto a los inputs
+    button[type="submit"] {
+        margin-bottom: 4px;
+        background-color: #0d6efd;
+        color: #fff;
+
+        &[disabled] {
+            background-color: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.26);
+        }
+    }
+}
+
+// Espaciado del contenedor general del diálogo
+mat-dialog-content {
+    padding-top: 8px !important;
+    padding-bottom: 16px !important;
+}
+
+/* 👈 Posicionamiento del título y el botón de cierre */
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 8px;
+    margin: 0;
+}
+
+.close-btn {
+    color: rgba(0, 0, 0, 0.54);
+
+    &:hover {
+        color: rgba(0, 0, 0, 0.87);
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+}
+
+/* 👈 Ocultar flechas del input type="number" (Chrome, Safari, Edge, Opera) */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* 👈 Ocultar flechas en Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.no-data {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+    padding: 16px 0;
+}
+
+.gasto-form {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    margin-bottom: 16px;
+}

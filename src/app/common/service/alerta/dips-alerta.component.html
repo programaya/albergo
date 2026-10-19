@@ -1,0 +1,31 @@
+<!-- <div class=" {{ classAlerta }} " role="alert">
+    <i *ngIf="iconAlerta" class="{{iconAlerta}}"></i>
+    {{ textoAlerta }}
+</div> -->
+
+<div [ngClass]="classAlerta" role="alert">
+
+    <!-- Icono o Spinner -->
+    <ng-container *ngIf="iconAlerta === 'spinner' || esCargando">
+        <span class="loader"></span>
+        <!-- <svg class="dips-spinner me-2" viewBox="0 0 50 50">
+            <circle cx="5" cy="5" r="5" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="100"
+                stroke-dashoffset="100" class="dips-spinner-track" />
+            <circle cx="5" cy="5" r="5" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="100"
+                stroke-dashoffset="25" class="dips-spinner-indicator" />
+        </svg> -->
+    </ng-container>
+
+    <ng-container *ngIf="iconAlerta && iconAlerta !== 'spinner' && !esCargando">
+        <i [class]="iconAlerta + ' me-2'"></i>
+    </ng-container>
+
+    <!-- Mensaje -->
+    <div class="flex-grow-1">{{ textoAlerta }}</div>
+
+    <!-- Barra de progreso opcional -->
+    <div *ngIf="progreso !== undefined" class="progress ms-3" style="width: 100px; height: 8px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="progreso"
+            role="progressbar"></div>
+    </div>
+</div>

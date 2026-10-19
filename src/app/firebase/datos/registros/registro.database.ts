@@ -21,33 +21,33 @@ export class RegistroDatabase {
   private _coleccionBase: any = ''
 
   // Usuario 
-  private usuario: any;  
+  private usuario: any;
 
   /**
    * La Database traslada los requerimientos de Datasource a el backend.
    */
   constructor(
-      private db: AngularFirestore,
-      private _dipsUsuarioService: DipsUsuarioService,
-      ) {
+    private db: AngularFirestore,
+    private _dipsUsuarioService: DipsUsuarioService,
+  ) {
 
-        // enviroment de prueba o produccion
-        if (environment.production) {
-          this._coleccionBase  = 'cuentas'  
+    // enviroment de prueba o produccion
+    if (environment.production) {
+      this._coleccionBase = 'cuentas'
 
-        } else {
-          this._coleccionBase = 'zTest-cuentas'
+    } else {
+      this._coleccionBase = 'zTest-cuentas'
+    }
+
+    // Usuario 
+    this._dipsUsuarioService.getUsuario()
+      .subscribe((usuario: any) => {
+        if (usuario != null) {
+          this.usuario = usuario;
         }
-        
-        // Usuario 
-        this._dipsUsuarioService.getUsuario()
-              .subscribe((usuario: any) => {
-                if (usuario != null) {
-                  this.usuario = usuario;
-                }  
-        });
+      });
 
-      }
+  }
 
   /**
    * simple
@@ -55,7 +55,7 @@ export class RegistroDatabase {
    * 
    * busca un determinado documento segun su identificacion
    */
-  simple(id: string)  {
+  simple(id: string) {
 
     return this.db.collection(this._coleccionBase).doc(this.usuario.idCuenta).collection<Registro>(this.coleccion).doc(id).snapshotChanges()
 
@@ -73,8 +73,8 @@ export class RegistroDatabase {
 
     return this.db
       .collection(this._coleccionBase).doc(this.usuario.idCuenta)
-      .collection<Registro>( this.coleccion, ref => {
-          let query: CollectionReference | Query = ref;
+      .collection<Registro>(this.coleccion, ref => {
+        let query: CollectionReference | Query = ref;
 
         // buscar
         // if (args!.buscar) {
@@ -85,13 +85,13 @@ export class RegistroDatabase {
         // if (args!.filtro) {
         //   query = query.where('apellido', '==', args!.filtro);
         // }
-        
+
         // sorting
-        if (!args!.orderBy){
+        if (!args!.orderBy) {
           args!.orderBy = this.orden;    // orden por defecto
         }
 
-        if (!args!.orderDir){
+        if (!args!.orderDir) {
           args!.orderDir = 'desc'    // orden por defecto
         }
 
@@ -127,18 +127,32 @@ export class RegistroDatabase {
    * Funcions de ingreso actualizacion y borrado
    * =====================================================
    */
-  async actualizaDato(id:any, info: any) {
+  async actualizaDato(id: any, info: any) {
     return await this.db.collection(this._coleccionBase).doc(this.usuario.idCuenta).collection<Registro>(this.coleccion).doc(id).update(info);
   }
 
   async ingresaDato(info: any) {
 
-    console.log(this.coleccion)
-    console.log(this.usuario.idCuenta)
-    console.log('INFO', info)
-    return await this.db.collection(this._coleccionBase).doc(this.usuario.idCuenta).collection<Registro>(this.coleccion).add(info);
+    console.log('[registro] INFO', info, this._coleccionBase, this.usuario.idCuenta, this.coleccion)
+    //   return await this.db.collection(this._coleccionBase).doc(this.usuario.idCuenta).collection<Registro>(this.coleccion).add(info);
+    try {
+      // 2. Ejecución segura con captura de errores
+      const docRef = await this.db.collection(this._coleccionBase)
+        .doc(this.usuario.idCuenta)
+        .collection<Registro>(this.coleccion)
+        .add(info);
+
+      console.log('[registro] ÉXITO: Documento creado con ID:', docRef.id);
+      return docRef;
+
+    } catch (error) {
+      console.error('[registro] ERROR de Firestore:', error);
+      throw error; // Propaga el error al componente para que lo muestre al usuario
+    }
+
+
   }
-  
+
   async borraDato(id: string) {
     return await this.db.collection(this._coleccionBase).doc(this.usuario.idCuenta).collection<Registro>(this.coleccion).doc(id).delete();
   }

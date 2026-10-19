@@ -42,7 +42,7 @@ import { DipsNavigation } from 'src/@dips/types';
  */
 
 export const navigation: DipsNavigation[] = [
-   
+
     {
         id: 'tablero',
         title: 'Tablero',
@@ -50,24 +50,33 @@ export const navigation: DipsNavigation[] = [
         icon: 'apps',
         url: '/principal/tablero/listado',
         exactMatch: true
-    },   
+    },
 
     {
-        id: 'caja',
-        title: 'Caja',
-        type: 'group',
-        icon: 'apps',
-        children: [
-            {
-                id: 'pagCaja',
-                title: 'Cajas',
-                type: 'item',
-                icon: 'assignment',
-                url: '/principal/caja/listado',
-                exactMatch: true
-            },
-        ]
+        id: 'pagCaja',
+        title: 'Arqueo de Caja',
+        type: 'item',
+        icon: 'assignment',
+        url: '/principal/caja/arqueo',
+        exactMatch: true
     },
+
+    // {
+    //     id: 'caja',
+    //     title: 'Caja',
+    //     type: 'group',
+    //     icon: 'apps',
+    //     children: [
+    //         {
+    //             id: 'pagCaja',
+    //             title: 'Cajas',
+    //             type: 'item',
+    //             icon: 'assignment',
+    //             url: '/principal/cajaxxx/listado',
+    //             exactMatch: true
+    //         },
+    //     ]
+    // },
 
     {
         id: 'admin',
@@ -76,62 +85,62 @@ export const navigation: DipsNavigation[] = [
         icon: 'supervisor_accoun',
         children: [
 
-                {
-                    id       : 'registroAdmin',
-                    title    : 'Registros',
-            //        translate: 'NAV.INICIO.TITLE',
-                    type     : 'item',
-                    icon     : 'MeetingRoom',
-                    url      : '/admin/registro/listado',
-                    badge    : {
-                    }
-                },
-                
-                {
-                    id       : 'habitaAdmin',
-                    title    : 'Habitaciones',
-            //        translate: 'NAV.INICIO.TITLE',
-                    type     : 'item',
-                    icon     : 'MeetingRoom',
-                    url      : '/admin/habita/listado',
-                    badge    : {
-                    }
-                },
-
-                {
-                    id       : 'promoHabita',
-                    title    : 'Promociones',
-            //        translate: 'NAV.INICIO.TITLE',
-                    type     : 'item',
-                    icon     : 'MeetingRoom',
-                    url      : '/admin/promo/listado',
-                    badge    : {
-                    }
-                },
-
-                {
-                    id       : 'adminUsu',
-                    title    : 'Usuarios',
-            //        translate: 'NAV.INICIO.TITLE',
-                    type     : 'item',
-                    icon     : 'supervisor_account',
-                    url      : '/admin/fsusuarios/listado',
-                    badge    : {
-                    }
-                },
-
-                {
-                    id       : 'adminConfig',
-                    title    : 'Configuración',
-            //        translate: 'NAV.INICIO.TITLE',
-                    type     : 'item',
-                    icon     : 'settings',
-                    url      : '/admin/config/config',
-                    badge    : {
-                    }
+            {
+                id: 'registroAdmin',
+                title: 'Registros',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'MeetingRoom',
+                url: '/admin/registro/listado',
+                badge: {
                 }
+            },
+
+            {
+                id: 'habitaAdmin',
+                title: 'Habitaciones',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'MeetingRoom',
+                url: '/admin/habita/listado',
+                badge: {
+                }
+            },
+
+            {
+                id: 'promoHabita',
+                title: 'Promociones',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'MeetingRoom',
+                url: '/admin/promo/listado',
+                badge: {
+                }
+            },
+
+            {
+                id: 'adminUsu',
+                title: 'Usuarios',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'supervisor_account',
+                url: '/admin/fsusuarios/listado',
+                badge: {
+                }
+            },
+
+            {
+                id: 'adminConfig',
+                title: 'Configuración',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'settings',
+                url: '/admin/config/config',
+                badge: {
+                }
+            }
 
         ]
-    }    
+    }
 
 ];

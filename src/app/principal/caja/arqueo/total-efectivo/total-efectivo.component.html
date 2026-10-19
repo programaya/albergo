@@ -1,0 +1,21 @@
+<mat-card class="daxa-card total-orders-card mb-25 border-radius bg-white border-none d-block">
+    <mat-card-content>
+        <div class="d-flex justify-content-between">
+            <div class="title">
+                <h5>
+                    Ventas en Efectivo
+                </h5>
+                <div class="number fw-medium lh-1 d-inline-flex align-items-start">
+                    <span>$ {{ getEnteros() }}</span>
+                    <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+                </div>
+
+            </div>
+            <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
+                <i class="material-symbols-outlined">
+                    payments
+                </i>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

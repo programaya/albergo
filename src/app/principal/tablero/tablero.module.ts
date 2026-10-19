@@ -39,6 +39,7 @@ import { TableroSidebarComponent } from './tablero-sidebars/tablero-sidebars.com
 import { TableroFormDialogComponent } from './tablero-form/tablero-form.component';
 
 import { MatPaginatorPersonal } from '../../../@dips/funciones/dips.paginator';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { MatPaginatorPersonal } from '../../../@dips/funciones/dips.paginator';
         MatSortModule,
         MatSnackBarModule,
         MatSelectModule,
+        MatRadioModule,
         // @matheo/dataSource
         MatDataSourceModule,
         DipsSharedModule,
@@ -77,4 +79,4 @@ import { MatPaginatorPersonal } from '../../../@dips/funciones/dips.paginator';
         { provide: MatPaginatorIntl, useClass: MatPaginatorPersonal },
     ]
 })
-export class TableroModule {}
+export class TableroModule { }

@@ -19,7 +19,48 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@base/*": [
+        "*"
+      ],
+      "@envs/*": [
+        "src/environments/*"
+      ],
+      "@dbIx/*": [
+        "src/app/DBase/indexedDB/*"
+      ],
+      "@sesion/*": [
+        "src/app/sesion/*"
+      ],
+      "@dbTabla/*": [
+        "src/app/DBase/Modelos/*"
+      ],
+      "@dbSync/*": [
+        "src/app/DBase/sync/*"
+      ],
+      "@perfil/*": [
+        "src/app/perfil/*"
+      ],
+      "@comun/*": [
+        "src/app/common/*"
+      ],
+      "@serv/*": [
+        "src/app/common/service/*"
+      ],
+      "@fe/*": [
+        "src/app/common/service/arca/*"
+      ],
+      "@permiso/*": [
+        "src/app/common/service/permisos/*"
+      ],
+      "@plan/*": [
+        "src/app/pricing-page/*"
+      ],
+      "@cf/*": [
+        "functions/src/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

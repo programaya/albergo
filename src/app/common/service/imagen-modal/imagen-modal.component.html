@@ -1,0 +1,48 @@
+<!-- src/app/shared/components/image-resizer-modal/image-resizer-modal.component.html -->
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ title }}</h2>
+        <button class="close-btn" (click)="closeModal()" aria-label="Cerrar">&times;</button>
+      </div>
+  
+      <file-drag-drop
+        [multiple]="false"
+        [accept]="'image/jpeg,image/png'"
+        [allowedTypes]="['jpeg', 'jpg', 'png']"
+        [maxSize]="200 * 1024"
+        [showPreview]="true"
+        title="Arrastra tu imagen aquí"
+        subtitle="Formatos: JPG o PNG (máx. 200 KB)"
+        (filesSelected)="onFilesSelected($event)"
+        (error)="onUploadError($event)">
+      </file-drag-drop>
+  
+      <!-- Mensaje de error -->
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+  
+      <!-- Vista previa redimensionada -->
+      <div class="preview-resized" *ngIf="previewUrl">
+        <h3>Vista previa (redimensionada)</h3>
+        <img [src]="previewUrl" alt="Vista previa redimensionada" />
+        <p class="hint">
+          Tamaño: {{ config.maxWidth }}×{{ config.maxHeight }} px |
+          Formato: {{ config.outputType === 'image/png' ? 'PNG' : 'JPEG' }}
+        </p>
+      </div>
+  
+      <!-- Acciones -->
+      <div class="modal-actions">
+        <button type="button" (click)="closeModal()" class="btn btn-cancel">Cancelar</button>
+        <button 
+          type="button" 
+          (click)="confirmImage()" 
+          [disabled]="!resizedFile || processing"
+          class="btn btn-confirm">
+          {{ processing ? 'Procesando...' : 'Usar esta imagen' }}
+        </button>
+      </div>
+    </div>
+  </div>

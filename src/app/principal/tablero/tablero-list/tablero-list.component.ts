@@ -61,7 +61,8 @@ export class TableroListComponent implements OnInit, OnDestroy {
         fueSucia: false,
         fechaInicio: 0,
         fechaFin: 0,
-        estado: 0
+        estado: 0,
+        datos: ""
     }
 
 
@@ -126,14 +127,14 @@ export class TableroListComponent implements OnInit, OnDestroy {
         // Llamamos los datos desde Firebase e iteramos los datos con data.ForEach y por
         // último ordenamos alfabeticamente
         s.pipe(takeUntil(this._unsubscribeAll))
-         .subscribe(data => {
+            .subscribe(data => {
                 console.log("DATOS ", data)
                 this.source = [];
                 data.forEach(item => {
 
                     this.source!.push(item as TablaItemUnido)
                 })
-                
+
                 // Orden por nombre
                 this.source!.sort(function (a, b) {
                     if (a.nombre > b.nombre) {
@@ -252,10 +253,12 @@ export class TableroListComponent implements OnInit, OnDestroy {
 
                 const data = formData.getRawValue();
 
+                console.log("================= ")
                 console.log("ACCION ", actionType)
                 console.log("DATOS ", data)
                 console.log("FILA ", fila)
                 console.log("INFO", info)
+                console.log("==================")
 
 
                 if (actionType == "checkIN" ||
@@ -266,25 +269,26 @@ export class TableroListComponent implements OnInit, OnDestroy {
                     this._datosOcupada.pagado = fila.pagado + info.pago
                     this._datosOcupada.periodo = info.periodo * 60000
                     this._datosOcupada.promoUID = data.promoUID
+                    this._datosOcupada.datos = info.medio
 
                     this._datosOcupada.fechaInicio = fila.horaInicio
                     this._datosOcupada.fechaFin = Math.floor(Date.now())
                     this._datosOcupada.automatico = fila.automatico
                     this._datosOcupada.fueSucia = fila.fueSucia
                     this._datosOcupada.estado = 1
-                // } else {
+                    // } else {
 
-                //     // Datos relevantes de habitacion Desocupada
-                //     this._datosOcupada.id = fila.id
-                //     this._datosOcupada.pagado = fila.pagado + info.pago
-                //     this._datosOcupada.periodo = info.periodo * 60000
-                //     this._datosOcupada.promoUID = data.promoUID
+                    //     // Datos relevantes de habitacion Desocupada
+                    //     this._datosOcupada.id = fila.id
+                    //     this._datosOcupada.pagado = fila.pagado + info.pago
+                    //     this._datosOcupada.periodo = info.periodo * 60000
+                    //     this._datosOcupada.promoUID = data.promoUID
 
-                //     this._datosOcupada.fechaInicio = fila.horaInicio
-                //     this._datosOcupada.fechaFin = Math.floor(Date.now() / 1000)
-                //     this._datosOcupada.automatico = false
-                //     this._datosOcupada.fueSucia = false
-                //     this._datosOcupada.estado = "O"
+                    //     this._datosOcupada.fechaInicio = fila.horaInicio
+                    //     this._datosOcupada.fechaFin = Math.floor(Date.now() / 1000)
+                    //     this._datosOcupada.automatico = false
+                    //     this._datosOcupada.fueSucia = false
+                    //     this._datosOcupada.estado = "O"
                 }
 
 
@@ -304,8 +308,8 @@ export class TableroListComponent implements OnInit, OnDestroy {
                                 aviso: 0,
                                 cuarto: false,
                                 garage: false,
-                                periodo: 0                            
-                            }    
+                                periodo: 0
+                            }
 
                             // se actualiza el nuevo estado
                             const nuevoDat: any = {
@@ -417,8 +421,8 @@ export class TableroListComponent implements OnInit, OnDestroy {
             aviso: 0,
             cuarto: false,
             garage: false,
-            periodo: 0,                            
-        }    
+            periodo: 0,
+        }
 
         const nuevoDat: any = {
             fueSucia: false,
@@ -439,8 +443,8 @@ export class TableroListComponent implements OnInit, OnDestroy {
             horaInicio: Math.floor(Date.now()),
             estado: 1,          // Ocupada
             aviso: 0,
-            periodo: info.periodo * 60000                            
-        }    
+            periodo: info.periodo * 60000
+        }
 
         const nuevoDat: any = {
             fueSucia: false,
@@ -545,12 +549,13 @@ export class TableroListComponent implements OnInit, OnDestroy {
 
         // Salva datos
         const nuevaHab: any = {
-            periodo: this._datosOcupada.periodo                            
-        }    
+            periodo: this._datosOcupada.periodo
+        }
 
         const nuevoDat: any = {
             pagado: this._datosOcupada.pagado,
-            promoUID: this._datosOcupada.promoUID
+            promoUID: this._datosOcupada.promoUID,
+            datos: this._datosOcupada.datos
         }
 
         this._fbService.actualiza(this._datosOcupada.id, nuevoDat, nuevaHab)
@@ -570,7 +575,7 @@ export class TableroListComponent implements OnInit, OnDestroy {
     private _salvaRegistro() {
 
         let inicio = new Date(this._datosOcupada.fechaInicio)
-        let fin    = new Date(Date.now())
+        let fin = new Date(Date.now())
 
         const registro = {
             fechaInicio: this.mysqlFecha(inicio),
@@ -578,6 +583,7 @@ export class TableroListComponent implements OnInit, OnDestroy {
             importe: this._datosOcupada.pagado,
             automatico: this._datosOcupada.automatico,
             fueSucia: this._datosOcupada.fueSucia,
+            medio: this._datosOcupada.datos,
 
             idCuenta: this.usuario.idCuenta,
             idUsuario: this.usuario.uid,
@@ -586,26 +592,34 @@ export class TableroListComponent implements OnInit, OnDestroy {
             estado: this._datosOcupada.estado
         }
 
-        console.log("salva registro", registro)
+        //        console.log("salva registro", registro)
 
-        this._nodeService.crud("post", "reg", registro)
+        //        this._nodeService.crud("post", "reg", registro)
 
         this._registroDB.ingresaDato(registro)
+            .then((docRef) => {
+                console.log("✅ Registro guardado exitosamente con ID:", docRef);
+                this._matSnackBar.open("Registro guardado correctamente", 'Cerrar', { duration: 3000 });
+            })
+            .catch((error: any) => {
+                console.error("❌ ERROR de Firestore al guardar registro:", error);
+                this._matSnackBar.open("Error al guardar el registro. Revisa la consola.", 'Cerrar', { duration: 4000 });
+            });
 
     }
 
-    private mysqlFecha (dia: any){
+    private mysqlFecha(dia: any) {
 
         return [
-                    dia.getFullYear(),
-                    (dia.getMonth()+1),
-                    dia.getDate(),
-               ].join('/') +' ' +
-               [
-                    dia.getHours(),
-                    dia.getMinutes(),
-                    dia.getSeconds()
-               ].join(':');
+            dia.getFullYear(),
+            (dia.getMonth() + 1),
+            dia.getDate(),
+        ].join('/') + ' ' +
+            [
+                dia.getHours(),
+                dia.getMinutes(),
+                dia.getSeconds()
+            ].join(':');
 
 
 

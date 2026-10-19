@@ -1,0 +1,16 @@
+/* dips-dialog.component.scss */
+.dips-dialogo-wrapper {
+    // Si es un diálogo "none", no queremos padding extra ni fondo
+    &.alert {
+      // Compensar el padding del diálogo de Material
+      margin: -24px;
+      padding: 24px;
+      border-radius: 0;
+    }
+  
+    // Si no tiene clase 'alert' (es decir, tipo='none'), mantener estilo estándar
+    &:not(.alert) {
+      // Aquí puedes personalizar el estilo neutro si lo deseas
+      // Por defecto, se verá como un diálogo Material normal
+    }
+  }

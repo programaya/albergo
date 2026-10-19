@@ -1,0 +1,58 @@
+import { Component } from '@angular/core';
+import { NgScrollbarModule } from 'ngx-scrollbar';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { ToggleService } from './toggle.service';
+import { NgClass, NgIf } from '@angular/common';
+import { CustomizerSettingsService } from '../../perfil/customizer-settings/customizer-settings.service';
+
+import { version } from '@base/package.json'
+import { MatDividerModule } from '@angular/material/divider';
+import { environment } from '@base/src/environments/environment';
+import { NgxWebTourModule } from '@abbasmgz/ngx-web-tour';
+
+@Component({
+    selector: 'app-sidebar',
+    imports: [NgScrollbarModule, MatExpansionModule, MatDividerModule, RouterLinkActive, RouterModule, RouterLink, NgClass, NgIf, NgxWebTourModule],
+    templateUrl: './sidebar.component.html',
+    styleUrl: './sidebar.component.scss'
+})
+export class SidebarComponent {
+
+    // isSidebarToggled
+    isSidebarToggled = false;
+
+    // isToggled
+    isToggled = false;
+
+    // Version
+    appVersion: string = version
+
+    // Environment
+    enProduccion: boolean = environment.production
+
+    // Beta
+    esBeta: boolean = environment.beta
+
+
+    constructor(
+        private toggleService: ToggleService,
+        public themeService: CustomizerSettingsService
+    ) {
+        this.toggleService.isSidebarToggled$.subscribe(isSidebarToggled => {
+            this.isSidebarToggled = isSidebarToggled;
+        });
+        this.themeService.isToggled$.subscribe(isToggled => {
+            this.isToggled = isToggled;
+        });
+    }
+
+    // Burger Menu Toggle
+    toggle() {
+        this.toggleService.toggle();
+    }
+
+    // Mat Expansion
+    panelOpenState = false;
+
+}

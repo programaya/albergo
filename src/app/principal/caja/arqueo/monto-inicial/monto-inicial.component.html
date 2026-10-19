@@ -1,0 +1,43 @@
+<mat-card class="daxa-card total-orders-card mb-25 border-radius bg-success border-none d-block">
+    <mat-card-content>
+        <div class="d-flex justify-content-between">
+            <div class="title">
+                <h5>Saldo Inicial</h5>
+
+                @if (editando()) {
+                <div class="number fw-medium lh-1 d-inline-flex align-items-center">
+                    <i class="material-symbols-outlined me-1" style="font-size: 1em;">attach_money</i>
+                    <input class="monto-input fw-medium lh-1" type="text" inputmode="decimal" [value]="total()"
+                        (blur)="desactivarEdicion($any($event.target).value)"
+                        (keydown.enter)="$any($event.target).blur()" #inputMonto />
+                </div>
+                } @else {
+                <!-- ✅ El cursor y el título dependen de puedeEditar() -->
+                <div class="number fw-medium lh-1 d-inline-flex align-items-start" (click)="activarEdicion()"
+                    [title]="puedeEditar() ? 'Click para editar' : ''"
+                    [style.cursor]="puedeEditar() ? 'pointer' : 'not-allowed'" role="button" tabindex="0">
+                    <span>$ {{ getEnteros() }}</span>
+                    <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+                </div>
+                }
+            </div>
+
+            <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
+                <i class="material-symbols-outlined">money_range</i>
+            </div>
+        </div>
+
+        <div class="info d-flex align-items-center justify-content-between">
+            <!-- ✅ El texto de instrucción solo aparece si puede editar -->
+            @if (puedeEditar()) {
+            <span class="sub-title d-block text-body">
+                Click en el Monto para Editar
+            </span>
+            } <!--  @else {
+            <span class="sub-title d-block text-body text-muted">
+                Monto no editable
+            </span>
+            } -->
+        </div>
+    </mat-card-content>
+</mat-card>

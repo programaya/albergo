@@ -1,0 +1,36 @@
+<mat-card class="daxa-card total-orders-card mb-25 border-radius bg-primary border-none d-block">
+    <mat-card-content>
+        <div class="d-flex justify-content-between">
+            <div class="title">
+                <h5>Monto Rendido</h5>
+
+                @if (editando()) {
+                <div class="number fw-medium lh-1 d-inline-flex align-items-center">
+                    <i class="material-symbols-outlined me-1" style="font-size: 1em;">attach_money</i>
+                    <input class="monto-input fw-medium lh-1" type="text" inputmode="decimal" [value]="total()"
+                        (blur)="desactivarEdicion($any($event.target).value)"
+                        (keydown.enter)="$any($event.target).blur()" #inputMonto />
+                </div>
+                } @else {
+                <div class="number fw-medium lh-1 d-inline-flex align-items-start" (click)="activarEdicion()"
+                    title="Click para editar" style="cursor: pointer;">
+                    <span>$ {{ getEnteros() }}</span>
+                    <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+                </div>
+                }
+                <div class="text-white-50 d-block fs-7 mt-1">
+                    <span>Diferencia: $ {{ diferencia() | number:'1.2-2' }}</span>
+                </div>
+            </div>
+
+            <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
+                <i class="material-symbols-outlined">price_check</i>
+            </div>
+        </div>
+        <div class="info d-flex align-items-center justify-content-between">
+            <span class="sub-title d-block text-body">
+                Click en el Monto para Editar
+            </span>
+        </div>
+    </mat-card-content>
+</mat-card>

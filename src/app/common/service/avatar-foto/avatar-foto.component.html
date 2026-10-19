@@ -1,0 +1,8 @@
+<div>
+    <img *ngIf="!showInicial" src="avatarImagen">
+
+  
+    <div *ngIf="showInicial" [ngClass]="tipo === 'chico' ? 'clase-chico' : 'clase-grande'" [ngStyle]="{'background-color':  circleColor }">
+        {{ iniciales }}
+    </div>
+</div>

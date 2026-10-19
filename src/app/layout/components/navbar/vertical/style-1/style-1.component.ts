@@ -21,22 +21,21 @@ import { albergoParametro } from '../../../../../../@dips/services/parametro/par
 import { environment } from 'src/environments/environment';
 
 @Component({
-    selector     : 'navbar-vertical-style-1',
-    templateUrl  : './style-1.component.html',
-    styleUrls    : ['./style-1.component.scss'],
+    selector: 'navbar-vertical-style-1',
+    templateUrl: './style-1.component.html',
+    styleUrls: ['./style-1.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
-{
+export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     dipsConfig: any;
     navigation: any;
 
     // Usuario y Cuenta
     private usuario: Usuarios;
-    cuenta: Cuentas;   
+    cuenta: Cuentas;
 
     idCuenta: any;
-    
+
     // Parametros
     //parametros: albergoParametro;
 
@@ -58,12 +57,11 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         private _authService: AutentificacionService,
         private _dipsUsuarioService: DipsUsuarioService,
         private _dipsParametroService: DipsParametroService
-        )
-    {
+    ) {
 
         // Cuentas y Usuarios
         this.cuenta = new Cuentas;
-        this.usuario = new Usuarios;   
+        this.usuario = new Usuarios;
 
         // Parametros
         //this.parametros = new albergoParametro;
@@ -78,11 +76,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
 
     // Directive
-    @ViewChild(DipsPerfectScrollbarDirective, {static: true})
-    set directive(theDirective: DipsPerfectScrollbarDirective)
-    {
-        if ( !theDirective )
-        {
+    @ViewChild(DipsPerfectScrollbarDirective, { static: true })
+    set directive(theDirective: DipsPerfectScrollbarDirective) {
+        if (!theDirective) {
             return;
         }
 
@@ -105,12 +101,12 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 take(1)
             )
             .subscribe(() => {
-                    setTimeout(() => {
-                        this._dipsPerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
-                    });
-                }
+                setTimeout(() => {
+                    this._dipsPerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
+                });
+            }
             );
-  
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -120,19 +116,17 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this._unsubscribeAll)
             )
             .subscribe(() => {
-                    if ( this._dipsSidebarService.getSidebar('navbar') )
-                    {
-                        this._dipsSidebarService.getSidebar('navbar').close();
-                    }
+                if (this._dipsSidebarService.getSidebar('navbar')) {
+                    this._dipsSidebarService.getSidebar('navbar').close();
                 }
+            }
             );
 
         // Subscribe to the config changes
@@ -160,8 +154,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -177,39 +170,39 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
      */
 
     // verifica que este conectado
-    usuarioConectado(){
+    usuarioConectado() {
         // Actualiza los datos del actual usuario
         this._authService.userDato.subscribe(
             (user) => {
                 if (user) {
-                    if (user.emailVerified ) {
+                    if (user.emailVerified) {
                         this.datosUsuario(user.uid);
-                    }    
+                    }
                 }
             }
-        );  
+        );
     }
 
     // extrae datos Usuario
-    datosUsuario(idUsuario: any){
+    datosUsuario(idUsuario: any) {
 
         this._authService.traeUsuario(idUsuario)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((resp: any) => {
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((resp: any) => {
 
-                    this.usuario = new Usuarios(resp.payload.data());
+                this.usuario = new Usuarios(resp.payload.data());
 
-                    // no siempre leer todo por eso el if
-                    if (this.usuario.estado != "") {
-                        this._dipsUsuarioService.setUsuario(this.usuario);
-                        this.datosCuenta(this.usuario.idCuenta);
-                    }
-            
-                });
+                // no siempre leer todo por eso el if
+                if (this.usuario.estado != "") {
+                    this._dipsUsuarioService.setUsuario(this.usuario);
+                    this.datosCuenta(this.usuario.idCuenta);
+                }
+
+            });
     }
 
     // extrae datos de Cuenta
-    datosCuenta(idCuenta: any){
+    datosCuenta(idCuenta: any) {
 
         // si no se informa la cuenta toma la del usuario
         if (idCuenta == '') {
@@ -217,19 +210,19 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         }
 
         this._authService.traeCuenta(idCuenta)
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((resp: any) => {
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((resp: any) => {
 
-                        this.cuenta = new Cuentas(resp.payload.data());
-                        this._dipsUsuarioService.setCuenta(idCuenta);
-                        this.ajustaNavigator();
-                    });
+                this.cuenta = new Cuentas(resp.payload.data());
+                this._dipsUsuarioService.setCuenta(idCuenta);
+                this.ajustaNavigator();
+            });
 
         // Parametros Globales
         this.globalParametros(idCuenta);
         this.idCuenta = idCuenta; // lo fija para el llamado de parametros
-             
-        
+
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -242,7 +235,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
      * ademas tienen tambien informacion de como proceder en algunos procesos
      * el modelo de los parametros esta en @dips/services/parametros
      */
-    globalParametros(idCuenta: any){
+    globalParametros(idCuenta: any) {
 
         // si no se informa la cuenta toma la del usuario
         if (idCuenta == '') {
@@ -251,11 +244,11 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 
         // trae los datos en la base de datos
         this._dipsParametroService.traeConfiguracion(idCuenta)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((dato) => {
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((dato) => {
 
 
-        });
+            });
 
     }
 
@@ -266,16 +259,14 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * Toggle sidebar opened status
      */
-    toggleSidebarOpened(): void
-    {
+    toggleSidebarOpened(): void {
         this._dipsSidebarService.getSidebar('navbar').toggleOpen();
     }
 
     /**
      * Toggle sidebar folded status
      */
-    toggleSidebarFolded(): void
-    {
+    toggleSidebarFolded(): void {
         this._dipsSidebarService.getSidebar('navbar').toggleFold();
     }
 
@@ -294,64 +285,73 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 
         const adminMenu = [
             {
-                id       : 'registroAdmin',
-                title    : 'Registros',
-        //        translate: 'NAV.INICIO.TITLE',
-                type     : 'item',
-                icon     : 'meeting_room',
-                url      : '/admin/registro/listado',
+                id: 'registroAdmin',
+                title: 'Registros',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'meeting_room',
+                url: '/admin/registro/listado',
+            },
+
+            // {
+            //     id: 'cajaAdmin',
+            //     title: 'Cajas',
+            //     //        translate: 'NAV.INICIO.TITLE',
+            //     type: 'item',
+            //     icon: 'meeting_room',
+            //     url: '/admin/registro/listado',
+            // },
+
+            {
+                id: 'adminHabita',
+                title: 'Habitaciones',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'meeting_room',
+                url: '/admin/habita/listado',
             },
 
             {
-                id       : 'adminHabita',
-                title    : 'Habitaciones',
-        //        translate: 'NAV.INICIO.TITLE',
-                type     : 'item',
-                icon     : 'meeting_room',
-                url      : '/admin/habita/listado',
+                id: 'promoHabita',
+                title: 'Promociones',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'monetization_on',
+                url: '/admin/promo/listado',
             },
 
             {
-                id       : 'promoHabita',
-                title    : 'Promociones',
-        //        translate: 'NAV.INICIO.TITLE',
-                type     : 'item',
-                icon     : 'monetization_on',
-                url      : '/admin/promo/listado',
+                id: 'adminUsu',
+                title: 'Usuarios',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'supervisor_account',
+                url: '/admin/fsusuarios/listado',
             },
 
             {
-                id       : 'adminUsu',
-                title    : 'Usuarios',
-        //        translate: 'NAV.INICIO.TITLE',
-                type     : 'item',
-                icon     : 'supervisor_account',
-                url      : '/admin/fsusuarios/listado',
-            },
-
-            {
-                id       : 'adminConfig',
-                title    : 'Configuración',
-        //        translate: 'NAV.INICIO.TITLE',
-                type     : 'item',
-                icon     : 'settings',
-                url      : '/admin/config/' + this.idCuenta,
-                badge    : {
+                id: 'adminConfig',
+                title: 'Configuración',
+                //        translate: 'NAV.INICIO.TITLE',
+                type: 'item',
+                icon: 'settings',
+                url: '/admin/config/' + this.idCuenta,
+                badge: {
                 }
             }
         ];
 
         // oculta si no es administrador
-        if ( this.usuario.tipoAdmin ) {
-            this._dipsNavigationService.updateNavigationItem('admin', {hidden: false});
-        }else {
-            this._dipsNavigationService.updateNavigationItem('admin', {hidden: true});
+        if (this.usuario.tipoAdmin) {
+            this._dipsNavigationService.updateNavigationItem('admin', { hidden: false });
+        } else {
+            this._dipsNavigationService.updateNavigationItem('admin', { hidden: true });
         }
 
         //indica el numero de avisos que tiene
         this._dipsNavigationService.removeNavigationItem('usuAdmin');
 
-        this._dipsNavigationService.updateNavigationItem('admin', {children: adminMenu})
+        this._dipsNavigationService.updateNavigationItem('admin', { children: adminMenu })
 
     }
 

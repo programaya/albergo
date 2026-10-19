@@ -1,0 +1,172 @@
+<div class="sidebar-area bg-white" [ngClass]="{'active': isSidebarToggled}"
+    [class.component-dark-theme]="themeService.isDark()" [class.dark-sidebar]="themeService.isSidebarDark()"
+    [class.right-sidebar]="themeService.isRightSidebar()" [class.hide-sidebar]="themeService.isHideSidebar()"
+    [class.card-borderd-theme]="themeService.isCardBorder()" [class.rtl-enabled]="themeService.isRTLEnabled()">
+    <div class="logo bg-white">
+        <a routerLink="/" class="d-flex align-items-center">
+            <img src="images/logo-icon.svg" alt="logo-icon">
+            <span class="fw-light fs-10">DiPS </span>
+            <span class="fw-semibold"> Gessi</span>
+        </a>
+        <a routerLink="/" class="d-flex align-items-end">
+            <span class="fw-light fs-10">v. {{ appVersion }}</span>
+            <span *ngIf="esBeta" class="fw-light fs-10">( BETA )</span>
+        </a>
+
+    </div>
+    <div (click)="toggle()" class="burger-menu" [ngClass]="{'active': isSidebarToggled}" tour="gessi-tutorial"
+        tourText="Activa o desactiva la visualización del Panel Central." tourTitle="Mostrar/Ocultar Panel"
+        [tourPriority]="101">
+        <span class="top-bar"></span>
+        <span class="middle-bar"></span>
+        <span class="bottom-bar"></span>
+    </div>
+    <ng-scrollbar visibility="hover">
+        <div class="sidebar-inner">
+            <div class="sidebar-menu" tour="gessi-tutorial"
+                tourText="Acceso directo a todas las herramientas y funcionalidades de Gessi." tourTitle="Panel Central"
+                [tourPriority]="100">
+                <mat-accordion>
+                    <span class="sub-title text-body">
+                        MODULOS
+                    </span>
+
+                    <!-- FACTURA -->
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <i class="material-symbols-outlined">
+                                    shopping_cart
+                                </i>
+                                <span class="title">
+                                    Ventas
+                                </span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="sidebar-sub-menu">
+
+                            <li class="sidemenu-item">
+                                <a routerLink="/factura/emitir/F" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link  link-destacado">
+                                    Emitir Facturas
+                                </a>
+                            </li>
+                            <li *ngIf="!enProduccion" class="sidemenu-item">
+                                <a routerLink="/factura/emitir/C" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Nota de Crédito
+                                </a>
+                            </li>
+                            <li *ngIf="!enProduccion" class="sidemenu-item">
+                                <a routerLink="/factura/emitir/D" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Nota de Débito
+                                </a>
+                            </li>
+                            <mat-divider></mat-divider>
+                            <li *ngIf="!enProduccion" class="sidemenu-item">
+                                <a routerLink="/factura/emitir/O" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Ordenes
+                                </a>
+                            </li>
+                            <li *ngIf="!enProduccion" class="sidemenu-item">
+                                <a routerLink="/factura/emitir/P" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Presupuestos
+                                </a>
+
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+
+                    <!-- CAJA -->
+                    <a routerLink="/caja/listado" class="sidebar-menu-link" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <i class="material-symbols-outlined">
+                            payments
+                        </i>
+                        <span class="title">Caja</span>
+                    </a>
+
+                    <!-- STOCK -->
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <i class="material-symbols-outlined">
+                                    inventory
+                                </i>
+                                <span class="title">
+                                    Stock
+                                </span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="sidebar-sub-menu">
+                            <!-- <li class="sidemenu-item">
+                                <a routerLink="/ecommerce-page" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Products Grid
+                                </a>
+                            </li> -->
+                            <li class="sidemenu-item">
+                                <a routerLink="/stock/productos" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Productos
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </mat-expansion-panel>
+
+                    <!-- CLIENTES -->
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <i class="material-symbols-outlined">
+                                    person
+                                </i>
+                                <span class="title">
+                                    Clientes
+                                </span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="sidebar-sub-menu">
+
+                            <li class="sidemenu-item">
+                                <a routerLink="/clientes/listado" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Clientes
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+
+                    <a *ngIf="!enProduccion" routerLink="/pdf-crear" class="sidebar-menu-link" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <i class="material-symbols-outlined">
+                            print_connect
+                        </i>
+                        <span class="title">Diseño PDF</span>
+                    </a>
+
+                    <!-- Terminos y Condiciones -->
+                    <a routerLink="/legal-page" class="sidebar-menu-link" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <i class="material-symbols-outlined">
+                            contract_edit
+                        </i>
+                        <span class="title">Terminos</span>
+                    </a>
+
+                    <a routerLink="/authentication/logout" class="sidebar-menu-link" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <i class="material-symbols-outlined">
+                            logout
+                        </i>
+                        <span class="title">Cerrar Sesion</span>
+                    </a>
+                </mat-accordion>
+            </div>
+        </div>
+    </ng-scrollbar>
+</div>

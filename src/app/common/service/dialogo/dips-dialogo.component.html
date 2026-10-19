@@ -1,0 +1,47 @@
+<!-- <h1 mat-dialogo-title>
+    {{ titulo }}
+</h1>
+<div mat-dialogo-content>
+    <p> {{ linea1 }} </p>
+    <p> {{ linea2 }} </p>
+    <p> {{ linea3 }} </p>
+</div>
+
+<div mat-dialogo-actions>
+    <button *ngIf = "!unBoton" mat-flat-button color="warn" (click)="dialogRef.close(false)">
+        {{ btnCancela }}
+    </button>
+    <button mat-flat-button class="daxa" (click)="dialogRef.close(true)" cdkFocusInitial>
+        {{ btnAceptar }}
+    </button>
+</div> -->
+
+<!-- dips-dialogo.component.html -->
+<div [class]="containerClass" class="dips-dialogo-wrapper">
+    <h1 mat-dialog-title>{{ titulo }}</h1>
+  
+    <div mat-dialog-content>
+      <h6>{{ linea1 }}</h6>
+      <h6 *ngIf="linea2">{{ linea2 }}</h6>
+      <h6 *ngIf="linea3">{{ linea3 }}</h6>
+    </div>
+  
+    <div mat-dialog-actions>
+      <button
+        *ngIf="!unBoton"
+        mat-button
+        color="warn"
+        (click)="dialogRef.close(false)"
+      >
+        {{ btnCancela }}
+      </button>
+      <button
+        mat-flat-button
+        class="daxa"
+        (click)="dialogRef.close(true)"
+        cdkFocusInitial
+      >
+        {{ btnAceptar }}
+      </button>
+    </div>
+  </div>

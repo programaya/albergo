@@ -1,0 +1,52 @@
+<!-- 👈 El título ahora usa flexbox para alojar el botón de cierre a la derecha -->
+<h2 mat-dialog-title class="dialog-title">
+    <span>Registro de Gastos</span>
+    <button mat-icon-button mat-dialog-close aria-label="Cerrar ventana" class="close-btn">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="gastoForm" class="gasto-form" (ngSubmit)="agregarGasto(txtDescripcion)">
+        <mat-form-field appearance="fill">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="descripcion" #txtDescripcion placeholder="Ej. Pago Proveedor"
+                autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Monto</mat-label>
+            <input matInput type="number" formControlName="monto" placeholder="0.00" autocomplete="off">
+        </mat-form-field>
+
+        <button mat-mini-fab color="primary" type="submit" [disabled]="gastoForm.invalid" matTooltip="Agregar gasto">
+            +
+        </button>
+    </form>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1"
+        *ngIf="dataSource.data.length > 0; else noMovimientos">
+
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <td mat-cell *matCellDef="let element"> {{element.monto | number:'1.2-2':'es-AR'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+    </table>
+
+    <ng-template #noMovimientos>
+        <p class="no-data">No hay movimientos registrados.</p>
+    </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <!-- 👈 Solo queda el botón principal de acción positiva -->
+    <button mat-raised-button color="primary" (click)="cerrarYGuardar()">Salir y Guardar</button>
+</mat-dialog-actions>

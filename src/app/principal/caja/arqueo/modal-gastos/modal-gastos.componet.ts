@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,41 +14,29 @@ registerLocaleData(localeEsAr, 'es-AR');
 
 @Component({
     selector: 'app-modal-gastos',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatDialogModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTableModule
-    ],
     templateUrl: './modal-gastos.component.html',
-    styleUrl: './modal-gastos.component.scss'
+    styleUrls: ['./modal-gastos.component.scss']
 })
 export class ModalGastosComponent implements OnInit {
-    dialogRef = inject(MatDialogRef<ModalGastosComponent>);
-    data = inject<{ caja: Caja | null }>(MAT_DIALOG_DATA);
-    #fb = inject(FormBuilder);
-
     cajaClonada!: Caja;
-
-    // Inicialización inmediata del formulario (solución del error anterior)
-    gastoForm: FormGroup = this.#fb.group({
-        descripcion: ['', [Validators.required]],
-        monto: [null, [Validators.required]]
-    });
-
+    gastoForm: FormGroup;
     columnasTabla: string[] = ['descripcion', 'monto'];
     dataSource = new MatTableDataSource<any>([]);
 
+    constructor(
+        public dialogRef: MatDialogRef<ModalGastosComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: { caja: Caja | null },
+        private fb: FormBuilder
+    ) {
+        this.gastoForm = this.fb.group({
+            descripcion: ['', [Validators.required]],
+            monto: [null, [Validators.required]]
+        });
+    }
+
     ngOnInit(): void {
-        // ✅ FALLBACK ROBUSTO: Si data.caja es null o undefined, usamos un objeto vacío
         const cajaBase = this.data?.caja || {};
         this.cajaClonada = JSON.parse(JSON.stringify(cajaBase));
-
         if (!this.cajaClonada.gastos) {
             this.cajaClonada.gastos = [];
         } else {
@@ -56,7 +44,6 @@ export class ModalGastosComponent implements OnInit {
                 (g: any) => g && g.descripcion && g.descripcion.trim() !== '' && !isNaN(Number(g.monto))
             );
         }
-
         this.dataSource.data = this.cajaClonada.gastos;
     }
 
@@ -65,32 +52,25 @@ export class ModalGastosComponent implements OnInit {
             this.gastoForm.markAllAsTouched();
             return;
         }
-
         const { descripcion, monto } = this.gastoForm.value;
         const descripcionLimpia = descripcion ? descripcion.trim() : '';
         const montoNumerico = Number(monto);
-
         if (!descripcionLimpia || isNaN(montoNumerico)) {
             return;
         }
-
         const nuevoGasto = {
             descripcion: descripcionLimpia,
             monto: montoNumerico
         };
-
-        // ✅ Doble verificación de seguridad por si acaso
         if (!this.cajaClonada) {
             this.cajaClonada = {} as Caja;
         }
         if (!this.cajaClonada.gastos) {
             this.cajaClonada.gastos = [];
         }
-
         this.cajaClonada.gastos = [...this.cajaClonada.gastos, nuevoGasto];
         this.dataSource.data = this.cajaClonada.gastos;
         this.gastoForm.reset();
-
         if (primerInput) {
             setTimeout(() => {
                 primerInput.focus();

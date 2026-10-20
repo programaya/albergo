@@ -1,24 +1,20 @@
-import { Component, input } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-total-efectivo',
-    imports: [MatCardModule],
     templateUrl: './total-efectivo.component.html',
-    styleUrl: './total-efectivo.component.scss'
+    styleUrls: ['./total-efectivo.component.scss'] // En Angular 13 es un arreglo
 })
 export class TotalEfectivoComponent {
-    total = input<number>(0); // Solo lectura
+    @Input() total: number = 0; // Entrada clásica con valor por defecto
 
     // Obtiene la parte entera formateada con puntos de miles
     getEnteros(): string {
-        const valor = this.total();
-        return Math.floor(valor).toLocaleString('es-AR');
+        return Math.floor(this.total).toLocaleString('es-AR');
     }
 
     // Obtiene exactamente los 2 dígitos decimales
     getDecimales(): string {
-        const valor = this.total();
-        return (valor % 1).toFixed(2).slice(2);
+        return (this.total % 1).toFixed(2).slice(2);
     }
 }

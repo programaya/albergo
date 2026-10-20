@@ -1,0 +1,23 @@
+<!-- total-gasto.component.html -->
+<mat-card class="daxa-card total-orders-card mb-25 border-radius border-none d-block bg-info"
+  (click)="abrirModalGastos()" [style.cursor]="puedeEditar ? 'pointer' : 'not-allowed'" role="button" tabindex="0">
+  <mat-card-content>
+    <div class="d-flex justify-content-between">
+      <div class="title">
+        <h5>Total Gastos / Ingreso</h5>
+        <div class="number fw-medium lh-1 d-inline-flex align-items-start">
+          <span>$ {{ getEnteros() }}</span>
+          <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+        </div>
+      </div>
+      <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
+        <i class="material-symbols-outlined">attach_money</i>
+      </div>
+    </div>
+    <div class="info d-flex align-items-center justify-content-between">
+      <span class="sub-title d-block text-body text-center">
+        {{ puedeEditar ? 'Click para Editar' : '' }}
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>

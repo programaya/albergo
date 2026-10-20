@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, model, signal, viewChild, afterRender, input, computed } from '@angular/core'; // <-- Agregado 'computed'
+import { Component, ElementRef, HostListener, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
@@ -7,94 +7,82 @@ import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-monto-inicial',
-    imports: [MatCardModule, FormsModule, MatIcon, DatePipe],
     templateUrl: './monto-inicial.component.html',
-    styleUrl: './monto-inicial.component.scss'
+    styleUrls: ['./monto-inicial.component.scss']
 })
-export class MontoInicialComponent {
-    cajaData = input<Caja | null>(null);
-    total = model<number>(0);
-    editando = signal<boolean>(false);
+export class MontoInicialComponent implements AfterViewInit, OnChanges {
+    @Input() cajaData: Caja | null = null;
+    @Input() total: number = 0;
+    @Output() totalChange = new EventEmitter<number>();
 
-    inputMonto = viewChild<HTMLInputElement>('inputMonto');
+    editando = false;
+    @ViewChild('inputMonto') inputMonto!: ElementRef<HTMLInputElement>;
 
-    // ✅ Nueva señal computada para controlar la visibilidad del texto
-    puedeEditar = computed(() => {
-        // Regla 3: Si el monto es mayor a cero, NUNCA se permite editar.
-        if (this.total() !== 0) {
-            return false;
-        }
+    constructor(private el: ElementRef) { }
 
-        const caja = this.cajaData();
+    ngAfterViewInit(): void {
+        this.actualizarFocus();
+    }
 
-        // Regla 1: Si cajaData es null (el padre envía null cuando id es 'todoCerrado'), SÍ permite editar.
-        if (caja === null) {
-            return true;
-        }
+    ngOnChanges(): void {
+        this.actualizarFocus();
+    }
 
-        // Regla 4: Si la caja está abierta (cerrada === false), SÍ permite editar (porque ya validamos que el monto es 0).
-        if (caja.cerrada === false) {
-            return true;
-        }
-
-        // Regla 2: Si llega aquí, significa que cajaData NO es null y cerrada === true.
-        // NO permite editar.
+    get puedeEditar(): boolean {
+        if (this.total !== 0) return false;
+        if (this.cajaData === null) return true;
+        if (this.cajaData.cerrada === false) return true;
         return false;
-    });
+    }
 
-    constructor(private el: ElementRef) {
-        afterRender(() => {
-            if (this.editando()) {
-                const input = this.inputMonto();
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }
-        });
+    private actualizarFocus(): void {
+        if (this.editando && this.inputMonto) {
+            this.inputMonto.nativeElement.focus();
+            this.inputMonto.nativeElement.select();
+        }
     }
 
     activarEdicion(): void {
-        // ✅ Solo permite editar si la señal computada lo autoriza
-        if (this.puedeEditar()) {
-            this.editando.set(true);
+        if (this.puedeEditar) {
+            this.editando = true;
+            setTimeout(() => {
+                if (this.inputMonto) {
+                    this.inputMonto.nativeElement.focus();
+                    this.inputMonto.nativeElement.select();
+                }
+            });
         } else {
             console.warn('No se permite editar el monto inicial en el estado actual de la caja.');
         }
     }
 
     desactivarEdicion(valorStr: string): void {
-        if (!this.editando()) return;
-
+        if (!this.editando) return;
         const limpio = valorStr.replace(/\./g, '').replace(',', '.');
         let numero = parseFloat(limpio) || 0;
-
-        // ✅ No se permiten montos negativos. Si es negativo, lo forzamos a 0.
         if (numero < 0) {
             numero = 0;
             console.warn('No se permiten montos negativos. Se estableció en 0.');
         }
-
-
-        this.total.set(numero);
-        this.editando.set(false);
+        this.total = numero;
+        this.totalChange.emit(this.total);
+        this.editando = false;
     }
 
     @HostListener('document:click', ['$event'])
     onClickOutside(event: MouseEvent): void {
-        if (this.editando() && !this.el.nativeElement.contains(event.target as Node)) {
-            const input = this.inputMonto();
-            if (input) {
-                this.desactivarEdicion(input.value);
+        if (this.editando && !this.el.nativeElement.contains(event.target as Node)) {
+            if (this.inputMonto) {
+                this.desactivarEdicion(this.inputMonto.nativeElement.value);
             }
         }
     }
 
     getEnteros(): string {
-        return Math.floor(this.total()).toLocaleString('es-AR');
+        return Math.floor(this.total).toLocaleString('es-AR');
     }
 
     getDecimales(): string {
-        return (this.total() % 1).toFixed(2).slice(2);
+        return (this.total % 1).toFixed(2).slice(2);
     }
 }

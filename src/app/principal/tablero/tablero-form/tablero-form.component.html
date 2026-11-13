@@ -23,7 +23,7 @@
             <form [formGroup]="datoForm">
 
                 <!-- PROMO -->
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <div *ngIf="dato.estado !== 1 || info.pago > 0" fxLayout="row" fxLayoutAlign="start center">
 
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Promo</mat-label>
@@ -36,6 +36,17 @@
                     </mat-form-field> 
                 </div>
 
+                <div *ngIf="dato.estado === 1 && info.pago > 0" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Tipo de moneda</mat-label>
+                        <mat-select formControlName="moneda">
+                            <mat-option *ngFor="let moneda of monedas" [value]="moneda.codigo">
+                                {{moneda.nombre}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="secondary-text">account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                </div>
             </form>
         </div>
         <!-- /BLOCK OCUPACION -->
@@ -80,6 +91,7 @@
         <button *ngIf="dato.estado === 1"
             class="mr-8" 
             (click)="matDialogRef.close(['checkOUT',datoForm,info])"
+            [disabled]="datoForm.invalid"
             mat-raised-button
             type="button" 
             color="accent">

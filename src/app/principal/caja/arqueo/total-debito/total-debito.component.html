@@ -1,0 +1,16 @@
+<mat-card class="caja-resumen-card">
+    <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">
+                <div class="h5">Tarjata de Débito</div> <!-- cambiar título -->
+                <div class="number fw-medium">
+                    <span>$ {{ getEnteros() }}</span>
+                    <sup class="fw-medium ms-1 decimales">,{{ getDecimales() }}</sup>
+                </div>
+            </div>
+            <div class="icon accent">
+                <mat-icon>payments</mat-icon> <!-- cambiar icono -->
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

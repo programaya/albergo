@@ -16,6 +16,7 @@ import { HabitacionesDatabase } from 'src/app/firebase/datos/habitaciones';
 import { TablaItemUnido } from 'src/app/firebase/servicios/firebase.model';
 import { FireBDService } from 'src/app/firebase/servicios/firebase.service';
 import { albergoParametro } from 'src/@dips/services/parametro/parametro.model';
+import { MEDIOS_PAGO } from '../../caja/arqueo/arqueo.model';
 
 @Component({
     selector: 'tablero-form-dialog',
@@ -44,6 +45,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
     dialogoTitulo!: string;
     botonAccion!: string
     listPromo: any = []
+    readonly monedas = MEDIOS_PAGO;
 
     private _unsubscribeAll: Subject<any>;
 
@@ -141,6 +143,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
         this.datoForm = new FormGroup({
             promoUID: new FormControl(),
+            moneda: new FormControl('0', Validators.required),
         });
 
     }
@@ -154,7 +157,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         }
 
         if (this.datoForm) {
-            this.datoForm.reset();
+            this.datoForm.reset({ promoUID: this.dato.promoUID || null, moneda: '0' });
         }
 
         if(this.dato.estado == 4 ||       // vacia
@@ -292,27 +295,16 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         // Solo para estado Ocupado
         if (this.dato.estado == 1){
 
-            const diferencia = (this.info.precio - this.dato.pagado) 
+            const diferencia = Math.max(0, this.info.precio - this.dato.pagado)
 
             this.info.pago = diferencia
 
             console.log("boton", this.info.periodo)
 
  
-            if (this.dato.aviso != 0) { // aun no hay aviso
-
-                if (this.dato.pagado >= this.info.precio) {
-
-                    this.botonAccion = "CKECK OUT"
-                } else {
-
-                    this.botonAccion = `COBRAR $${diferencia}`
-                }
-
-            } else {
-
-                this.botonAccion = `COBRAR $${diferencia}`              
-            }
+            this.botonAccion = diferencia === 0
+                ? 'CHECK OUT'
+                : `COBRAR $${diferencia}`;
         }
     }
 

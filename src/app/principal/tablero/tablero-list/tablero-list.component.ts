@@ -24,6 +24,7 @@ import { MovimientosDatabase } from '../../../firebase/datos/movimientos/movimie
 import { CajFlujosDatabase } from 'src/app/firebase/datos/cajFlujos';
 import { CajasDatabase } from 'src/app/firebase/datos/cajas';
 import { Cajas } from 'src/app/firebase/datos/cajas';
+import { ArqueoDatabase } from '../../caja/arqueo/arqueo.database';
 
 //import { albergoParametro } from 'src/@dips/services/parametro/parametro.model';
 import { FireBDService } from '../../../firebase/servicios/firebase.service';
@@ -86,6 +87,7 @@ export class TableroListComponent implements OnInit, OnDestroy {
         private _habitacionDB: HabitacionesDatabase,
         private _cajFlujosDB: CajFlujosDatabase,
         private _cajaDB: CajasDatabase,
+        private _arqueoDB: ArqueoDatabase,
         private _fbService: FireBDService,
         private _nodeService: NodeJsService,
 
@@ -242,7 +244,7 @@ export class TableroListComponent implements OnInit, OnDestroy {
         // })
 
         this.dialogoRef.afterClosed()
-            .subscribe((respuesta: any) => {
+            .subscribe(async (respuesta: any) => {
 
                 if (!respuesta) { return }
 
@@ -261,9 +263,31 @@ export class TableroListComponent implements OnInit, OnDestroy {
                 if (actionType == "checkIN" ||
                     actionType == "checkOUT") {
 
+                    const pago = Number(info.pago);
+                    if (!Number.isFinite(pago) || pago < 0) {
+                        this._matSnackBar.open('El importe del pago no es válido.', 'Cerrar');
+                        return;
+                    }
+                    if (pago > 0) {
+                        try {
+                            await this._arqueoDB.registrarCobro({
+                                fechaInicio: new Date(),
+                                fechaFin: new Date(),
+                                tipo: 'Cobro',
+                                descripcion: `Habitación ${fila.nombre} · ${actionType === 'checkIN' ? 'Ingreso' : (fila.aviso === 0 ? 'Estadía' : 'Salida')}`,
+                                monto: pago,
+                                usuario: this.usuario.email || '',
+                                datos: data.moneda
+                            });
+                        } catch (error) {
+                            this._matSnackBar.open('No se pudo registrar el cobro en caja. La operación no continuó.', 'Cerrar');
+                            return;
+                        }
+                    }
+
                     // Datos relevantes de habitacion Ocupada
                     this._datosOcupada.id = fila.id
-                    this._datosOcupada.pagado = fila.pagado + info.pago
+                    this._datosOcupada.pagado = (actionType === 'checkIN' ? 0 : (Number(fila.pagado) || 0)) + pago
                     this._datosOcupada.periodo = info.periodo * 60000
                     this._datosOcupada.promoUID = data.promoUID
 
@@ -445,7 +469,8 @@ export class TableroListComponent implements OnInit, OnDestroy {
         const nuevoDat: any = {
             fueSucia: false,
             automatico: false,
-            pagado: 0,
+            pagado: Number(info.pago) || 0,
+            promoUID: data.promoUID || '',
         }
 
         this._fbService.actualiza(fila.id, nuevoDat, nuevaHab);
@@ -559,7 +584,6 @@ export class TableroListComponent implements OnInit, OnDestroy {
     private _hacerCheckOUT() {
 
         this._salvaRegistro()
-        // TODO hacer caja
         // TODO hace PHP
 
 

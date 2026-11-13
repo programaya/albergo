@@ -98,7 +98,6 @@ $typography: mat-typography-config(
 // @import "src/app/principal/stock/stock.theme"; 
 // @import "src/app/principal/customer/customer.theme"; 
 @import "src/app/principal/tablero/tablero.theme";
-@import "src/app/principal/caja/caja.theme";
 
 
 // Define a mixin for easier access
@@ -126,7 +125,6 @@ $typography: mat-typography-config(
     // @include stock-theme($theme);
     // @include customer-theme($theme);
     @include tablero-theme($theme);
-    @include caja-theme($theme);
 
 }
 

@@ -1,0 +1,47 @@
+<div id="registro" class="page-layout carded fullwidth">
+  <div class="top-bg accent"></div>
+  <div class="center">
+    <header class="header accent">
+      <mat-icon>history</mat-icon>
+      <div><h1>Registro</h1><p>Explorador de cierres de caja</p></div>
+    </header>
+    <div class="content-card">
+      <div class="herramientas">
+        <div><h2>Cierres de caja</h2><p>Seleccioná un cierre para consultar su arqueo completo.</p></div>
+        <mat-form-field appearance="outline"><mat-label>Buscar cierre</mat-label>
+          <input matInput [(ngModel)]="busqueda" (ngModelChange)="pagina = 0" placeholder="Fecha, usuario o ID">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <p *ngIf="cargando" class="mensaje" role="status">Cargando cierres de caja…</p>
+      <p *ngIf="error" class="mensaje" role="alert">{{ error }}</p>
+      <div class="tabla-scroll" *ngIf="!cargando && !error">
+        <table matSort [matSortActive]="orden.active" [matSortDirection]="orden.direction" (matSortChange)="ordenar($event)">
+          <thead><tr>
+            <th mat-sort-header="fechaApertura">Apertura</th>
+            <th mat-sort-header="fechaCierre">Cierre</th>
+            <th mat-sort-header="usuario">Usuario</th>
+            <th mat-sort-header="montoInicial" class="importe">Monto inicial</th>
+            <th mat-sort-header="ingresos" class="importe">Ingresos</th>
+            <th mat-sort-header="montoCierre" class="importe">Monto de cierre</th>
+            <th>Detalle</th>
+          </tr></thead>
+          <tbody>
+            <tr *ngFor="let caja of visibles" (click)="explorar(caja)" class="cierre-fila">
+              <td>{{ (fecha(caja.fechaApertura) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td>
+              <td>{{ (fecha(caja.fechaCierre) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td>
+              <td>{{ caja.usuario || '—' }}</td>
+              <td class="importe">{{ caja.montoInicial | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td>
+              <td class="importe">{{ ingresos(caja) | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td>
+              <td class="importe">{{ caja.montoCierre | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td>
+              <td><button mat-icon-button (click)="$event.stopPropagation(); explorar(caja)" [attr.aria-label]="'Ver cierre ' + caja.id"><mat-icon>visibility</mat-icon></button></td>
+            </tr>
+            <tr *ngIf="!filtradas.length"><td colspan="7" class="mensaje">{{ cajas.length ? 'No hay cierres que coincidan con la búsqueda.' : 'Todavía no hay cierres de caja registrados.' }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <mat-paginator *ngIf="!cargando && !error" [length]="filtradas.length" [pageIndex]="pagina" [pageSize]="tamanioPagina"
+        [pageSizeOptions]="[15, 30, 50]" (page)="cambiarPagina($event)" aria-label="Páginas de cierres de caja"></mat-paginator>
+    </div>
+  </div>
+</div>

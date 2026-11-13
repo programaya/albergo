@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // COMPONENTES
-import { RegistroBaseComponent } from './registro-base/registro-base.component';
+import { RegistroComponent } from './registro.component';
 
 const routes: Routes = [
   {
     path: 'listado',
-    component: RegistroBaseComponent,
+    component: RegistroComponent,
 
-  }
+  },
+  { path: '', redirectTo: 'listado', pathMatch: 'full' }
 
 ];
 

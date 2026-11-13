@@ -1,0 +1,22 @@
+<mat-card class="caja-resumen-card" (click)="abrirModalMovimientos()"
+  [style.cursor]="puedeEditar ? 'pointer' : 'not-allowed'" role="button" tabindex="0">
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="title">
+        <div class="h5">Ajustes</div>
+        <div class="number fw-medium">
+          <span>$ {{ getEnteros() }}</span>
+          <sup class="fw-medium ms-1 decimales">,{{ getDecimales() }}</sup>
+        </div>
+      </div>
+      <div class="icon accent">
+        <mat-icon>attach_money</mat-icon>
+      </div>
+    </div>
+    <div class="info mt-16">
+      <span class="sub-title text-center">
+        {{ caja && caja.cerrada ? '' : 'Click para registrar ajustes' }}
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>

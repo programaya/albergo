@@ -1,20 +1,15 @@
-<mat-card class="daxa-card total-orders-card mb-25 border-radius bg-white border-none d-block">
+<mat-card class="caja-resumen-card">
     <mat-card-content>
-        <div class="d-flex justify-content-between">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">
-                <h5>
-                    Ventas en Efectivo
-                </h5>
-                <div class="number fw-medium lh-1 d-inline-flex align-items-start">
+                <div class="h5">Efectivo</div> <!-- cambiar título -->
+                <div class="number fw-medium">
                     <span>$ {{ getEnteros() }}</span>
-                    <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+                    <sup class="fw-medium ms-1 decimales">,{{ getDecimales() }}</sup>
                 </div>
-
             </div>
-            <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
-                <i class="material-symbols-outlined">
-                    payments
-                </i>
+            <div class="icon accent">
+                <mat-icon>money</mat-icon> <!-- cambiar icono -->
             </div>
         </div>
     </mat-card-content>

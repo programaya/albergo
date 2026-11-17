@@ -116,17 +116,9 @@
         "deploy": {
           "builder": "@angular/fire:deploy",
           "options": {
-            "ssr": "cloud-functions",
-            "prerender": true,
             "firebaseProject": "albergo-dips",
             "firebaseHostingSite": "albergo-dips",
-            "functionName": "ssr_albergo",
-            "functionsNodeVersion": "20",
-            "region": "us-central1",
-            "browserTarget": "albergo:build:production",
-            "serverTarget": "albergo:server:production",
-            "prerenderTarget": "albergo:prerender:production",
-            "outputPath": "dist/albergo/functions"
+            "browserTarget": "albergo:build:production"
           }
         },
         "server": {

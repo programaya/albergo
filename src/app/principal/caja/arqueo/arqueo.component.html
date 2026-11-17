@@ -1,101 +1,66 @@
-<div class="col-12">
-    <!-- Breadcrumb -->
-    <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-        <h5 class="mb-0">
-            Arqueo de Caja
-        </h5>
-        <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
-            <li class="breadcrumb-item position-relative">
-                <a routerLink="/" class="d-inline-block position-relative">
-                    <i class="ri-home-8-line"></i>
-                    Inicio
-                </a>
-            </li>
-            <li class="breadcrumb-item position-relative">
-                Cajas
-            </li>
-            <li class="breadcrumb-item position-relative">
-                Arqueo
-            </li>
-        </ol>
-    </div>
-
-    <div class="row">
-        <!-- 1: Total Efectivo -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-efectivo [total]="cajaData()?.totales?.efectivo || 0" />
-        </div>
-
-        <!-- 2: Total Debito -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-debito [total]="cajaData()?.totales?.debito || 0" />
-        </div>
-
-        <!-- 3: Total Tarjetas de Crédito -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-credito [total]="cajaData()?.totales?.credito || 0" />
-        </div>
-
-        <!-- 4: Total Billetera -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-billetera [total]="cajaData()?.totales?.billetera || 0" />
-        </div>
-    </div>
-</div>
-
-<div class="col-12">
-    <div class="row">
-        <!-- 5: Total Cta Cte -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-ctacte [total]="cajaData()?.totales?.ctacte || 0" />
-        </div>
-
-        <!-- 6: Total Transferencia -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-transferencia [total]="cajaData()?.totales?.transferencia || 0" />
-        </div>
-
-        <!-- 7: Total Cheque -->
-        <div class="col-sm-6 col-lg-3">
-            <app-total-cheque [total]="cajaData()?.totales?.cheque || 0" />
-        </div>
-
-        <!-- 8: Total Gastos -->
-        <div class="col-sm-6 col-lg-3" tour="gessi-tutorial"
-            tourText="Registra los gastos e ingresos de la caja. También permite realizar ajustes para corregir errores o movimientos no registrados."
-            tourTitle="Gastos e ingresos" [tourPriority]="1">
-            <app-total-gasto [caja]="cajaData()" [total]="totalGastos()" (cajaModificada)="actualizarGastos($event)" />
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12 col-xxxl-3">
-        <div class="row">
-            <div class="col-md-5 col-xxxl-12">
-
-                <!-- Monto Inicial -->
-                <app-monto-inicial [cajaData]="cajaData()" [total]="cajaData()?.montoInicial ?? 0"
-                    (totalChange)="actualizarMontoInicial($event)" tour="gessi-tutorial"
-                    tourText="Efectivo con el que se abre la caja. Si cometes un error al ingresarlo, puedes corregirlo desde la sección de Gastos e Ingresos."
-                    tourTitle="Monto inicial" [tourPriority]="2">
-                </app-monto-inicial>
-
+<div id="arqueo" class="page-layout carded fullwidth">
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="s-32 mr-16">account_balance_wallet</mat-icon>
+                <div><div class="h1">Arqueo de caja</div><div class="mt-4">Cajas / Arqueo</div></div>
             </div>
-            <div class="col-md-7 col-xxxl-12">
+            <span class="estado-caja">{{ cajaData ? (cajaData.cerrada ? 'Cerrada' : 'Abierta') : 'Sin caja abierta' }}</span>
+        </div>
+        <div class="content-card">
+            <div class="content p-24">
+                <div class="resumen-superior">
+                    <mat-card class="total-card">
+                        <div class="secondary-text">Total ingresado</div>
+                        <div class="total-importe">{{ totalIngresos | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</div>
+                        <div class="secondary-text detalle">Ingresos por todos los medios de pago</div>
+                        <mat-icon class="accent total-icon">account_balance_wallet</mat-icon>
+                    </mat-card>
+                    <app-monto-inicial [cajaData]="cajaData" [total]="cajaData?.montoInicial ?? 0" [guardando]="guardandoMontoInicial"
+                        (totalChange)="actualizarMontoInicial($event)"></app-monto-inicial>
+                    <app-total-movimiento [caja]="cajaData" [usuario]="usuario.email" [total]="totalMovimientos"
+                        (cajaModificada)="actualizarMovimientos($event)"></app-total-movimiento>
+                </div>
 
-                <!-- Monto Arqueo -->
-                <app-monto-arqueo [cajaData]="cajaData()" [total]="cajaData()?.montoCierre ?? 0"
-                    (totalChange)="actualizarMontoCierre($event)" tour="gessi-tutorial"
-                    tourText="Cantidad de dinero en efectivo real que se entrega al finalizar y cerrar la caja."
-                    tourTitle="Monto rendido" [tourPriority]="3">
-                </app-monto-arqueo>
+                <div class="cuerpo-arqueo">
+                    <section class="tabla-panel" aria-labelledby="detalle-titulo" (click)="abrirDetalle()"
+                        (keydown.enter)="abrirDetalle()" (keydown.space)="$event.preventDefault(); abrirDetalle()"
+                        [attr.role]="cajaData ? 'button' : null" [attr.tabindex]="cajaData ? 0 : null"
+                        [style.cursor]="cajaData ? 'pointer' : 'default'" aria-haspopup="dialog">
+                        <div class="panel-heading">
+                            <div><h2 id="detalle-titulo">Detalle de caja</h2><span class="secondary-text">Resumen de ingresos y ajustes registrados · Pulsá para ver el detalle completo</span></div>
+                            <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
+                        </div>
+                        <div class="tabla-scroll">
+                            <table>
+                                <thead><tr><th>Fecha de fin</th><th>Concepto</th><th>Tipo</th><th class="importe">Importe</th></tr></thead>
+                                <tbody *ngIf="cajaData; else sinCaja">
+                                    <tr *ngFor="let movimiento of cajaData.movimientos" [style.color]="colorMovimiento(movimiento)" [attr.title]="indicadores(movimiento)"><td>{{ (fechaFinMovimiento(movimiento) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td><td>{{ movimiento.descripcion }}</td><td>{{ movimiento.tipo }}</td><td class="importe">{{ movimiento.monto | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td></tr>
+                                </tbody>
+                                <ng-template #sinCaja><tbody><tr><td colspan="4" class="empty-state"><mat-icon>inbox</mat-icon><p>No hay una caja abierta</p><span class="secondary-text">Abrí una caja para comenzar el arqueo.</span></td></tr></tbody></ng-template>
+                                <tfoot *ngIf="cajaData"><tr><td colspan="3">Total de ingresos</td><td class="importe">{{ totalIngresos | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td></tr></tfoot>
+                            </table>
+                        </div>
+                    </section>
+                    <aside class="medios-panel" aria-labelledby="medios-titulo">
+                        <div class="panel-heading"><h2 id="medios-titulo">Medios de pago</h2></div>
+                        <div class="medio-row" *ngFor="let medio of mediosPago">
+                            <mat-icon class="secondary-text">{{ medio.icono }}</mat-icon>
+                            <div><span class="secondary-text">{{ medio.nombre }}</span><strong>{{ totalMedio(medio.clave) | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</strong></div>
+                        </div>
+                    </aside>
+                </div>
+                <div class="cierre-panel">
+                    <app-monto-arqueo [cajaData]="cajaData" [total]="cajaData?.montoCierre ?? 0"
+                        (totalChange)="actualizarMontoCierre($event)"></app-monto-arqueo>
+                    <div class="acciones-caja">
+                        <span class="secondary-text">{{ cajaData?.cerrada ? 'Caja cerrada · Consulta del arqueo' : 'Revisá los importes antes de cerrar la caja.' }}</span>
+                        <button *ngIf="cajaData && !cajaData.cerrada" mat-raised-button color="warn" (click)="verificaCierre()"><mat-icon>lock</mat-icon> Cerrar caja</button>
+                        <button *ngIf="cajaIdActual === 'todoCerrado'" mat-raised-button color="primary" (click)="abrirNuevaCaja()"><mat-icon>lock_open</mat-icon> Abrir caja</button>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
-    <button *ngIf="cajaData()?.cerrada === false" mat-flat-button class="d-block text-center w-100 btn-cerrar-caja"
-        (click)="verificaCierre()">Cerrar Caja</button>
-    <button *ngIf="cajaIdActual() === 'todoCerrado'" mat-flat-button class="d-block text-center w-100  btn-abrir-caja"
-        (click)="abrirNuevaCaja()">Abrir Caja</button>
 </div>

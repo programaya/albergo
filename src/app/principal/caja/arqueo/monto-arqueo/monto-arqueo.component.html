@@ -1,36 +1,45 @@
-<mat-card class="daxa-card total-orders-card mb-25 border-radius bg-primary border-none d-block">
+<mat-card class="caja-resumen-card" (click)="activarEdicion()">
     <mat-card-content>
-        <div class="d-flex justify-content-between">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">
-                <h5>Monto Rendido</h5>
+                <div class="h5">Monto Rendido</div>
 
-                @if (editando()) {
-                <div class="number fw-medium lh-1 d-inline-flex align-items-center">
-                    <i class="material-symbols-outlined me-1" style="font-size: 1em;">attach_money</i>
-                    <input class="monto-input fw-medium lh-1" type="text" inputmode="decimal" [value]="total()"
-                        (blur)="desactivarEdicion($any($event.target).value)"
-                        (keydown.enter)="$any($event.target).blur()" #inputMonto />
-                </div>
-                } @else {
-                <div class="number fw-medium lh-1 d-inline-flex align-items-start" (click)="activarEdicion()"
-                    title="Click para editar" style="cursor: pointer;">
+                <div class="number fw-medium" (keydown.enter)="activarEdicion()" (keydown.space)="$event.preventDefault(); activarEdicion()" [title]="puedeEditar ? 'Ingresar monto rendido' : 'Monto rendido'"
+                    [style.cursor]="puedeEditar ? 'pointer' : 'default'" role="button" [attr.aria-disabled]="!puedeEditar" [attr.tabindex]="puedeEditar ? 0 : -1">
                     <span>$ {{ getEnteros() }}</span>
-                    <sup class="fw-medium ms-1" style="font-size: 0.6em; top: 0;">,{{ getDecimales() }}</sup>
+                    <sup class="fw-medium ms-1 decimales">,{{ getDecimales() }}</sup>
                 </div>
-                }
-                <div class="text-white-50 d-block fs-7 mt-1">
-                    <span>Diferencia: $ {{ diferencia() | number:'1.2-2' }}</span>
+
+                <div class="secondary-text d-block fs-7 mt-8">
+                    <span>Diferencia: $ {{ diferencia | number:'1.2-2' }}</span>
                 </div>
             </div>
 
-            <div class="icon text-center bg-daxa rounded-circle text-white position-relative">
-                <i class="material-symbols-outlined">price_check</i>
+            <div class="icon accent">
+                <mat-icon>price_check</mat-icon>
             </div>
         </div>
-        <div class="info d-flex align-items-center justify-content-between">
-            <span class="sub-title d-block text-body">
-                Click en el Monto para Editar
-            </span>
+
+        <div class="info mt-16" *ngIf="puedeEditar">
+            <span class="sub-title secondary-text">Click para ingresar el monto total por única vez</span>
         </div>
     </mat-card-content>
 </mat-card>
+
+<ng-template #modalMontoRendido>
+    <h2 mat-dialog-title>Ingresar monto total rendido</h2>
+    <form (ngSubmit)="aceptarMonto()">
+        <mat-dialog-content>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Monto total</mat-label>
+                <input matInput type="number" min="0" step="0.01" [formControl]="montoControl" autocomplete="off">
+                <mat-error>Ingresá un monto igual o mayor a cero.</mat-error>
+            </mat-form-field>
+            <p>Una vez aceptado, el monto rendido no se podrá modificar.</p>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-button type="button" mat-dialog-close>Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="montoControl.invalid">Aceptar</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>

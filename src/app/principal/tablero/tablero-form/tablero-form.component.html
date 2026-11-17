@@ -12,8 +12,7 @@
         </mat-toolbar-row>
 
         <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center end">
-            <div class="dato-nombre mt-8" *ngIf="dato.estado == 4 || dato.estado == 1">{{info.precio| currency:'$ '}}
-            </div>
+            <div class="dato-nombre mt-8" *ngIf="dato.estado == 4 || dato.estado == 1">{{info.precio| currency:'$ '}}</div>
         </mat-toolbar-row>
     </mat-toolbar>
 
@@ -24,11 +23,12 @@
             <form [formGroup]="datoForm">
 
                 <!-- PROMO -->
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <div *ngIf="dato.estado !== 1 || info.pago > 0" fxLayout="row" fxLayoutAlign="start center">
+
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Promo</mat-label>
                         <mat-select formControlName="promoUID" (selectionChange)="eventoPromo($event)">
-                            <mat-option *ngFor="let promo of listPromo" [value]="promo.uid">
+                            <mat-option *ngFor="let promo of listPromo" [value]="promo.uid" >
                                 {{promo.nombre}}
                             </mat-option>
                         </mat-select>
@@ -36,35 +36,32 @@
                     </mat-form-field>
                 </div>
 
-                <!-- METODOS DE PAGO (Visible solo si hay un monto a cobrar > 0) -->
-                <div *ngIf="info.pago > 0" fxLayout="column" fxLayoutAlign="start start" class="mt-16 mb-8">
-                    <span class="mat-body-1 mb-8" style="font-weight: 600;">Método de Pago:</span>
-                    <mat-radio-group formControlName="metodoPago" fxLayout="column" fxLayoutGap="8px"
-                        (change)="onMetodoPagoChange($event)">
-                        <mat-radio-button value="0">Efectivo</mat-radio-button>
-                        <mat-radio-button value="1">Tarjeta de Crédito</mat-radio-button>
-                        <mat-radio-button value="2">Tarjeta de Débito</mat-radio-button>
-                        <mat-radio-button value="3">Billetera Virtual</mat-radio-button>
-                        <mat-radio-button value="4">Transferencia Bancaria</mat-radio-button>
-                        <mat-radio-button value="5">Cheque</mat-radio-button>
-                        <mat-radio-button value="6">Otro</mat-radio-button>
-                    </mat-radio-group>
-                    <mat-error *ngIf="datoForm.get('metodoPago')?.invalid && datoForm.get('metodoPago')?.touched"
-                        class="mt-4">
-                        Debe seleccionar un método de pago para continuar.
-                    </mat-error>
+                <div *ngIf="dato.estado === 1 && info.pago > 0" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Tipo de moneda</mat-label>
+                        <mat-select formControlName="moneda">
+                            <mat-option *ngFor="let moneda of monedas" [value]="moneda.codigo">
+                                {{moneda.nombre}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="secondary-text">account_balance_wallet</mat-icon>
+                    </mat-form-field>
                 </div>
-
             </form>
         </div>
         <!-- /BLOCK OCUPACION -->
 
         <!-- BLOCK ETAPA -->
         <div id="block-etapa">
-            <button class="mr-8" (click)="matDialogRef.close(['boton', datoForm])" mat-raised-button type="button"
+            <button
+                class="mr-8"
+                (click)="matDialogRef.close(['boton',datoForm])"
+                mat-raised-button
+                type="button"
                 color="accent">
                 {{botonAccion}}
             </button>
+
         </div>
         <!-- /BLOCK ETAPA -->
 
@@ -72,22 +69,34 @@
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
 
-        <button mat-button class="mr-8" (click)="matDialogRef.close(['cancel',datoForm])" aria-label="Cancelar"
-            matTooltip="Cancelar">
+        <button
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['cancel',datoForm])"
+                aria-label="Cancelar"
+                matTooltip="Cancelar">
             CANCELAR
         </button>
 
-        <button *ngIf="dato.estado === 4" mat-button class="save-button"
-            (click)="matDialogRef.close(['checkIN',datoForm,info])" [disabled]="datoForm.invalid" aria-label="Check IN"
-            matTooltip="Check IN">
+        <button *ngIf="dato.estado === 4"
+                mat-button
+                class="save-button"
+                (click)="matDialogRef.close(['checkIN',datoForm,info])"
+                [disabled]="datoForm.invalid"
+                aria-label="Check IN"
+                matTooltip="Check IN">
             CHECK IN
         </button>
 
-        <button *ngIf="dato.estado === 1" class="mr-8" (click)="matDialogRef.close(['checkOUT',datoForm,info])"
-            mat-raised-button type="button" color="accent" [disabled]="datoForm.invalid">
+        <button *ngIf="dato.estado === 1"
+            class="mr-8"
+            (click)="matDialogRef.close(['checkOUT',datoForm,info])"
+            [disabled]="datoForm.invalid"
+            mat-raised-button
+            type="button"
+            color="accent">
             {{botonAccion}}
         </button>
 
     </div>
-
 </div>

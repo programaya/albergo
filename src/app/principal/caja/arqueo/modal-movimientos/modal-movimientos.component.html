@@ -1,0 +1,34 @@
+<h2 mat-dialog-title class="dialog-title">
+    <span>Registro de ajustes</span>
+    <button mat-icon-button (click)="cerrarYGuardar()" aria-label="Cerrar y guardar ajustes" class="close-btn">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="movimientoForm" class="gasto-form" (ngSubmit)="agregarMovimiento(txtDescripcion)">
+        <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Detalle</mat-label>
+            <input matInput formControlName="descripcion" #txtDescripcion placeholder="Ej. Pago Proveedor"
+                autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Monto</mat-label>
+            <mat-hint>Positivo: suma efectivo · Negativo: resta efectivo</mat-hint>
+            <input matInput type="number" formControlName="monto" placeholder="0.00" autocomplete="off">
+        </mat-form-field>
+
+        <button mat-mini-fab color="primary" type="submit" [disabled]="movimientoForm.invalid" matTooltip="Agregar ajuste" aria-label="Agregar ajuste">
+            <mat-icon>add</mat-icon>
+        </button>
+    </form>
+
+    <p *ngIf="ajustesAgregados > 0" role="status">Ajustes agregados: {{ ajustesAgregados }}. Podés ingresar otro ajuste o cerrar y guardar.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="cerrarYGuardar()">
+        Cerrar y guardar
+    </button>
+</mat-dialog-actions>

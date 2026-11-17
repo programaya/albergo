@@ -20,5 +20,9 @@ contraseña de aplicacion qSXXatNA6XWj2Dm598v5
 
 ## Comandos
 
-    ng deploy       Publicar aplicacion
+    ng deploy       Compilar y publicar la SPA en Firebase Hosting
+
+El deploy usa `albergo:build:production` y publica `dist/albergo/browser`
+en el sitio `albergo-dips`. Las rutas de Angular se sirven mediante
+`/index.html`, sin ejecutar SSR, prerender ni desplegar Cloud Functions.
 

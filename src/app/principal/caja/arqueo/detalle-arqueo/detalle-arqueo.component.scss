@@ -1,0 +1,9 @@
+:host { display: block; }
+dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+dt { color: #666; font-size: 12px; }
+dd { margin: 4px 0 0; overflow-wrap: anywhere; }
+.tabla-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; min-width: 100px; }
+th { background: #f5f5f5; }
+mat-dialog-actions { gap: 8px; flex-wrap: wrap; }

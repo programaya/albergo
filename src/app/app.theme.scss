@@ -1,14 +1,17 @@
 // -----------------------------------------------------------------------------------------------------
-// @ Custom color maps for Dips 
+// @ Custom color maps for Dips
 // -----------------------------------------------------------------------------------------------------
 $dips-white: (
     500: white,
-    contrast: (500: $dark-primary-text )
+    contrast: (
+        500: $dark-primary-text
+    )
 );
 
 $dips-black: (
     500: black,
-    contrast: (500: $light-primary-text,
+    contrast: (
+        500: $light-primary-text,
     )
 );
 
@@ -27,7 +30,8 @@ $dips-navy: (
     A200: #9EA1A9,
     A400: #5C616F,
     A700: #2D323E,
-    contrast: (50: $dark-primary-text,
+    contrast: (
+        50: $dark-primary-text,
         100: $dark-primary-text,
         200: $dark-primary-text,
         300: $light-primary-text,
@@ -58,12 +62,13 @@ $custom_palettes: (
 // -----------------------------------------------------------------------------------------------------
 
 // Angular Material typography
-$typography: mat-typography-config($font-family: 'Muli, Helvetica Neue, Arial, sans-serif',
-        $title: mat-typography-level(20px, 32px, 600),
-        $body-2: mat-typography-level(14px, 24px, 600),
-        $button: mat-typography-level(14px, 14px, 600),
-        $input: mat-typography-level(16px, 1.125, 400) // line-height must be unitless !!!
-    );
+$typography: mat-typography-config(
+    $font-family: 'Muli, Helvetica Neue, Arial, sans-serif',
+    $title: mat-typography-level(20px, 32px, 600),
+    $body-2: mat-typography-level(14px, 24px, 600),
+    $button: mat-typography-level(14px, 14px, 600),
+    $input: mat-typography-level(16px, 1.125, 400) // line-height must be unitless !!!
+);
 
 // Setup the typography
 @include angular-material-typography($typography);
@@ -79,7 +84,7 @@ $typography: mat-typography-config($font-family: 'Muli, Helvetica Neue, Arial, s
 // Modulos
 @import "src/app/sesion/sesion.theme";
 // @import "src/app/principal/fspagina/fspagina.theme"; // importar el tema del modulo
-// @import "src/app/principal/fsnodo/fsnodo.theme"; 
+// @import "src/app/principal/fsnodo/fsnodo.theme";
 
 // Admin
 @import "src/app/admin/fsusuarios/fsusuarios.theme";
@@ -89,11 +94,10 @@ $typography: mat-typography-config($font-family: 'Muli, Helvetica Neue, Arial, s
 @import "src/app/admin/registro/registro.theme";
 
 // Principal
-// @import "src/app/principal/factura/factura.theme"; 
-// @import "src/app/principal/stock/stock.theme"; 
-// @import "src/app/principal/customer/customer.theme"; 
+// @import "src/app/principal/factura/factura.theme";
+// @import "src/app/principal/stock/stock.theme";
+// @import "src/app/principal/customer/customer.theme";
 @import "src/app/principal/tablero/tablero.theme";
-@import "src/app/principal/cajaxxx/caja.theme";
 
 
 // Define a mixin for easier access
@@ -107,7 +111,7 @@ $typography: mat-typography-config($font-family: 'Muli, Helvetica Neue, Arial, s
     //Modulos
     @include sesion-theme($theme);
     // @include fspagina-theme($theme); // Incluir modulo
-    // @include fsnodo-theme($theme); 
+    // @include fsnodo-theme($theme);
 
     // Admin
     @include fsusuarios-theme($theme);
@@ -121,7 +125,6 @@ $typography: mat-typography-config($font-family: 'Muli, Helvetica Neue, Arial, s
     // @include stock-theme($theme);
     // @include customer-theme($theme);
     @include tablero-theme($theme);
-    @include caja-theme($theme);
 
 }
 
@@ -157,7 +160,7 @@ body.theme-default {
         warn: $default-warn-palette
     );
 
-@include dips-color-classes($palettes);
+    @include dips-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -192,7 +195,7 @@ body.theme-yellow-light {
         warn: $yellow-light-theme-warn-palette
     );
 
-@include dips-color-classes($palettes);
+    @include dips-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -227,7 +230,7 @@ body.theme-blue-gray-dark {
         warn: $blue-gray-dark-theme-warn-palette
     );
 
-@include dips-color-classes($palettes);
+    @include dips-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -262,5 +265,5 @@ body.theme-pink-dark {
         warn: $pink-dark-theme-warn-palette
     );
 
-@include dips-color-classes($palettes);
+    @include dips-color-classes($palettes);
 }

@@ -1,24 +1,18 @@
-import { Component, input } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'app-total-billetera',
-    imports: [MatCardModule],
-    templateUrl: './total-billetera.component.html',
-    styleUrl: './total-billetera.component.scss'
+  selector: 'app-total-billetera', // cambiar según componente
+  templateUrl: './total-billetera.component.html',
+  styleUrls: ['./total-billetera.component.scss']
 })
 export class TotalBilleteraComponent {
-    total = input<number>(0); // Solo lectura
+  @Input() total: number = 0;
 
-    // Obtiene la parte entera formateada con puntos de miles
-    getEnteros(): string {
-        const valor = this.total();
-        return Math.floor(valor).toLocaleString('es-AR');
-    }
+  getEnteros(): string {
+    return Math.floor(this.total).toLocaleString('es-AR');
+  }
 
-    // Obtiene exactamente los 2 dígitos decimales
-    getDecimales(): string {
-        const valor = this.total();
-        return (valor % 1).toFixed(2).slice(2);
-    }
+  getDecimales(): string {
+    return (this.total % 1).toFixed(2).slice(2);
+  }
 }

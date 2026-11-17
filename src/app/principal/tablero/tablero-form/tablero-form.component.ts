@@ -16,6 +16,7 @@ import { HabitacionesDatabase } from 'src/app/firebase/datos/habitaciones';
 import { TablaItemUnido } from 'src/app/firebase/servicios/firebase.model';
 import { FireBDService } from 'src/app/firebase/servicios/firebase.service';
 import { albergoParametro } from 'src/@dips/services/parametro/parametro.model';
+import { MEDIOS_PAGO } from '../../caja/arqueo/arqueo.model';
 
 @Component({
     selector: 'tablero-form-dialog',
@@ -25,7 +26,7 @@ import { albergoParametro } from 'src/@dips/services/parametro/parametro.model';
 })
 
 export class TableroFormDialogComponent implements OnInit, OnDestroy {
-    //    accion: string;
+//    accion: string;
 
     dato: TablaItemUnido;
     habitacion: any;
@@ -37,7 +38,6 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         precio: 0,
         pago: 0,
         periodo: 0,
-        medio: ""
     }
 
 
@@ -45,6 +45,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
     dialogoTitulo!: string;
     botonAccion!: string
     listPromo: any = []
+    readonly monedas = MEDIOS_PAGO;
 
     private _unsubscribeAll: Subject<any>;
 
@@ -55,7 +56,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         private _habitaDB: HabitacionesDatabase,
         private _dipsUsuarioService: DipsUsuarioService,
         // private _promoDB: PromocionesDatabase,
-        //        private _dipsParametrosService: DipsParametroService,
+//        private _dipsParametrosService: DipsParametroService,
         private _fireService: FireBDService,
 
     ) {
@@ -63,15 +64,15 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         this.dato = _data.dato;
 
         this._dipsUsuarioService.getUsuario()
-            .subscribe((usuario: any) => {
+                .subscribe((usuario: any) => {
 
-                console.log("USUARIO +++", usuario)
+            console.log("USUARIO +++" , usuario)
 
-                this.usuario = usuario
+            this.usuario = usuario
 
-            })
+        })
 
-        switch (this.dato.estado) {
+         switch (this.dato.estado) {
             case 0:           // Mantenimiento
                 this.dialogoTitulo = "Mantenimiento"
                 this.botonAccion = "Salir de Mantenimiento"
@@ -82,7 +83,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
             case 1:           // Ocupada
                 this.dialogoTitulo = "Ocupada"
                 break;
-            case 2:           // Sucia  
+            case 2:           // Sucia
                 this.dialogoTitulo = "Sucia"
                 this.botonAccion = "Iniciar Limpieza"
                 break;
@@ -104,7 +105,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
                 console.log("LEE PARAMETROS", parametro)
                 this.parametros = new albergoParametro(parametro);
 
-            })
+        })
 
     }
 
@@ -114,9 +115,9 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
         // SOLO PARA OCUPADA O VACIA
         if (this.dato.estado == 4 ||      // vacia
-            this.dato.estado == 1) {       // ocupada
+            this.dato.estado == 1){       // ocupada
 
-            // busca la habitacion para armar las posibles promos    
+            // busca la habitacion para armar las posibles promos
             this._habitaDB.busca(this.dato.id)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((res: any) => {
@@ -142,24 +143,25 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
         this.datoForm = new FormGroup({
             promoUID: new FormControl(),
-            metodoPago: new FormControl(null)
+            moneda: new FormControl('0', Validators.required),
         });
 
     }
 
     creaForm() {
-        if (this.dato.estado == 4 ||       // vacia
-            this.dato.estado == 1) {       // Ocupada
 
-            this._armadoPromos()
+        if(this.dato.estado == 4 ||       // vacia
+           this.dato.estado == 1) {       // Ocupada
+
+           this._armadoPromos()
         }
 
         if (this.datoForm) {
-            this.datoForm.reset();
+            this.datoForm.reset({ promoUID: this.dato.promoUID || null, moneda: '0' });
         }
 
-        if (this.dato.estado == 4 ||       // vacia
-            this.dato.estado == 1) {       // ocupada
+        if(this.dato.estado == 4 ||       // vacia
+           this.dato.estado == 1) {       // ocupada
 
             this._calculoImporte(this.dato.promoUID)
         }
@@ -169,12 +171,12 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
         if (this.dato.estado == 0 &&      // Mantenimiento
             !this.usuario.tipoAdmin) {
             alert("Esta función solo puede ser desactivada por el Administrador");
-            this.matDialogRef.close(['cancel', this.datoForm])
+            this.matDialogRef.close(['cancel',this.datoForm])
         }
 
         if (this.dato.valor == 0) {
             alert("Esta habitación no tiene importe declarado.");
-            this.matDialogRef.close(['cancel', this.datoForm])
+            this.matDialogRef.close(['cancel',this.datoForm])
         }
 
 
@@ -185,18 +187,18 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
     pantalla() {
 
-        if (this.dato.estado == 0 ||       // Mantenimiento
-            this.dato.estado == 3 ||       // Limpieza
-            this.dato.estado == 2) {       // Sucia
+        if(this.dato.estado == 0 ||       // Mantenimiento
+           this.dato.estado == 3 ||       // Limpieza
+           this.dato.estado == 2) {       // Sucia
 
-            //pantalla en cambio de estado
-            document.getElementById('block-ocupacion')!.style.display = 'none';
-            document.getElementById('block-etapa')!.style.display = 'block';
+          //pantalla en cambio de estado
+          document.getElementById('block-ocupacion')!.style.display = 'none';
+          document.getElementById('block-etapa')!.style.display = 'block';
 
         } else {                    //ocupacion
 
-            document.getElementById('block-etapa')!.style.display = 'none';
-            document.getElementById('block-ocupacion')!.style.display = 'block';
+          document.getElementById('block-etapa')!.style.display = 'none';
+          document.getElementById('block-ocupacion')!.style.display = 'block';
 
         }
 
@@ -204,13 +206,13 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
     eventoPromo(evento: any) {
 
-        this._calculoImporte(evento.value)
+       this._calculoImporte(evento.value)
 
     }
 
     // =========================================================
-    // * PROMOS  
-    // =========================================================  
+    // * PROMOS
+    // =========================================================
 
     private _armadoPromos() {
 
@@ -222,7 +224,7 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
 
         if (this.dato.estado == 4 ||  // Vacia
-            this.dato.estado == 1) {   // ocupada
+            this.dato.estado == 1){   // ocupada
 
             // filtro de dia y fecha
             let hoy = new Date();
@@ -257,8 +259,8 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
             if (encontrada != undefined) {
 
-                this.info.precio = (encontrada.importe > 0) ? encontrada.importe : this.dato.valor
-                this.info.periodo = (encontrada.permanencia > 0) ? encontrada.permanencia : this.parametros.tiempoStandard
+                this.info.precio  = (encontrada.importe > 0)? encontrada.importe: this.dato.valor
+                this.info.periodo = (encontrada.permanencia > 0)? encontrada.permanencia: this.parametros.tiempoStandard
 
                 this.datoForm.controls['promoUID'].setValue(encontrada.uid)
 
@@ -276,50 +278,34 @@ export class TableroFormDialogComponent implements OnInit, OnDestroy {
 
         // calculo del multipo para ajustar el precio
         if (this.dato.aviso == 3) {           // Gracia
-            const hoy = Math.floor(Date.now()) // hoy en segundos
+            const hoy =  Math.floor(Date.now()) // hoy en segundos
             const multiplo = Math.floor(Math.floor((hoy - this.dato.horaInicio)) / (this.info.periodo * 60))
 
             this.info.precio *= multiplo + 1;
 
         }
 
+
         this._boton()
 
     }
 
-    onMetodoPagoChange(evento: any) {
-        // Guardamos inmediatamente el valor seleccionado en info.medio
-        this.info.medio = evento.value;
-        console.log("Método de pago guardado en info.medio:", this.info.medio);
-    }
-
     private _boton() {
+
         // Solo para estado Ocupado
-        if (this.dato.estado == 1) {
-            const diferencia = (this.info.precio - this.dato.pagado);
-            this.info.pago = diferencia;
-            const metodoPagoCtrl = this.datoForm.get('metodoPago');
+        if (this.dato.estado == 1){
 
-            if (diferencia > 0) {
-                // Hay saldo pendiente: se muestra el texto de cobrar y se exige método de pago
-                this.botonAccion = `COBRAR $${diferencia}`;
-                if (metodoPagoCtrl) {
-                    metodoPagoCtrl.setValidators([Validators.required]);
-                }
-            } else {
-                // Diferencia es 0 o menor: se corrige el mensaje
-                this.botonAccion = "CHECK OUT";
-                if (metodoPagoCtrl) {
-                    metodoPagoCtrl.clearValidators();
-                    metodoPagoCtrl.setValue(null); // Limpiamos la selección si no es necesario cobrar
-                }
-            }
+            const diferencia = Math.max(0, this.info.precio - this.dato.pagado)
 
-            if (metodoPagoCtrl) {
-                metodoPagoCtrl.updateValueAndValidity();
-            }
+            this.info.pago = diferencia
+
+            console.log("boton", this.info.periodo)
+
+
+            this.botonAccion = diferencia === 0
+                ? 'CHECK OUT'
+                : `COBRAR $${diferencia}`;
         }
     }
-
 
 }

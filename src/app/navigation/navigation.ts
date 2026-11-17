@@ -2,43 +2,43 @@ import { DipsNavigation } from 'src/@dips/types';
 
 /**
  * ESTRUCTURA DEL MENU
- * 
+ *
  * los items son objetos los cuales tienen los siguientes parametros:
- * 
+ *
  *  id
  *      identificacion unica del objeto
- * 
+ *
  *  title
  *      Titulo que se muestra en el menu
- * 
+ *
  *  type
  *      Tipo de item del menu
  *          group       => genera un titulo de un grupo
  *          collapsable => es un grupo que se puede abrir y cerrar
  *          item        => es una seleccion ejecutable
- * 
+ *
  *  url
  *      direccion del componente
- * 
+ *
  *  children
  *      array que genera submenu donde se escriben los subobjetes del submenu
- * 
+ *
  * traslate
  *      identificacion de la traduccion
- * 
+ *
  * icon
  *      nombre del icono que se desea colocar
- * 
+ *
  * badge
  *      coloca numeritos decolores este genera otro objeto
  *      que puede tener los mismos parametros
- * 
+ *
  * bg
  *      Color background
- * 
+ *
  * fg
  *      Color Fortware
- * 
+ *
  */
 
 export const navigation: DipsNavigation[] = [
@@ -53,30 +53,22 @@ export const navigation: DipsNavigation[] = [
     },
 
     {
-        id: 'pagCaja',
-        title: 'Arqueo de Caja',
-        type: 'item',
-        icon: 'assignment',
-        url: '/principal/caja/arqueo',
-        exactMatch: true
-    },
+        id: 'caja',
+        title: 'Caja',
+        type: 'group',
+        icon: 'apps',
+        children: [
 
-    // {
-    //     id: 'caja',
-    //     title: 'Caja',
-    //     type: 'group',
-    //     icon: 'apps',
-    //     children: [
-    //         {
-    //             id: 'pagCaja',
-    //             title: 'Cajas',
-    //             type: 'item',
-    //             icon: 'assignment',
-    //             url: '/principal/cajaxxx/listado',
-    //             exactMatch: true
-    //         },
-    //     ]
-    // },
+            {
+                id: 'arqueoCaja',
+                title: 'Arqueo de Caja',
+                type: 'item',
+                icon: 'assignment',
+                url: '/principal/arqueo',
+                exactMatch: true
+            },
+        ]
+    },
 
     {
         id: 'admin',
@@ -87,7 +79,7 @@ export const navigation: DipsNavigation[] = [
 
             {
                 id: 'registroAdmin',
-                title: 'Registros',
+                title: 'Registro',
                 //        translate: 'NAV.INICIO.TITLE',
                 type: 'item',
                 icon: 'MeetingRoom',

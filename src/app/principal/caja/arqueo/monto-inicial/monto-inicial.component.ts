@@ -1,81 +1,52 @@
-import { Component, ElementRef, HostListener, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { Caja } from '@base/src/app/DBase/Modelos/caja.model';
-import { DatePipe } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Caja } from '../arqueo.model';
 
 @Component({
     selector: 'app-monto-inicial',
     templateUrl: './monto-inicial.component.html',
     styleUrls: ['./monto-inicial.component.scss']
 })
-export class MontoInicialComponent implements AfterViewInit, OnChanges {
+export class MontoInicialComponent {
     @Input() cajaData: Caja | null = null;
     @Input() total: number = 0;
+    @Input() guardando = false;
     @Output() totalChange = new EventEmitter<number>();
 
-    editando = false;
-    @ViewChild('inputMonto') inputMonto!: ElementRef<HTMLInputElement>;
+    @ViewChild('modalMontoInicial') modalMontoInicial!: TemplateRef<any>;
+    montoControl = new FormControl(null, [Validators.required, Validators.min(0)]);
+    private modalAbierto = false;
 
-    constructor(private el: ElementRef) { }
-
-    ngAfterViewInit(): void {
-        this.actualizarFocus();
-    }
-
-    ngOnChanges(): void {
-        this.actualizarFocus();
-    }
+    constructor(private dialog: MatDialog) { }
 
     get puedeEditar(): boolean {
-        if (this.total !== 0) return false;
-        if (this.cajaData === null) return true;
-        if (this.cajaData.cerrada === false) return true;
-        return false;
-    }
-
-    private actualizarFocus(): void {
-        if (this.editando && this.inputMonto) {
-            this.inputMonto.nativeElement.focus();
-            this.inputMonto.nativeElement.select();
-        }
+        return !this.guardando && this.total === 0 &&
+            !this.cajaData?.movimientos.some(movimiento => movimiento.datos === '9') &&
+            (!this.cajaData || !this.cajaData.cerrada);
     }
 
     activarEdicion(): void {
-        if (this.puedeEditar) {
-            this.editando = true;
-            setTimeout(() => {
-                if (this.inputMonto) {
-                    this.inputMonto.nativeElement.focus();
-                    this.inputMonto.nativeElement.select();
-                }
-            });
-        } else {
-            console.warn('No se permite editar el monto inicial en el estado actual de la caja.');
-        }
-    }
-
-    desactivarEdicion(valorStr: string): void {
-        if (!this.editando) return;
-        const limpio = valorStr.replace(/\./g, '').replace(',', '.');
-        let numero = parseFloat(limpio) || 0;
-        if (numero < 0) {
-            numero = 0;
-            console.warn('No se permiten montos negativos. Se estableció en 0.');
-        }
-        this.total = numero;
-        this.totalChange.emit(this.total);
-        this.editando = false;
-    }
-
-    @HostListener('document:click', ['$event'])
-    onClickOutside(event: MouseEvent): void {
-        if (this.editando && !this.el.nativeElement.contains(event.target as Node)) {
-            if (this.inputMonto) {
-                this.desactivarEdicion(this.inputMonto.nativeElement.value);
+        if (!this.puedeEditar || this.modalAbierto) return;
+        this.montoControl.reset();
+        this.modalAbierto = true;
+        const referencia = this.dialog.open(this.modalMontoInicial, { id: 'saldo-inicial', width: '400px' });
+        referencia.afterClosed().subscribe((monto: number | undefined) => {
+            this.modalAbierto = false;
+            if (monto !== undefined && this.puedeEditar) {
+                this.totalChange.emit(monto);
             }
+        });
+    }
+
+    aceptarMonto(): void {
+        const monto = Number(this.montoControl.value);
+        if (this.montoControl.invalid || !Number.isFinite(monto) || monto < 0) {
+            this.montoControl.markAsTouched();
+            return;
         }
+        // Cierra únicamente el modal de saldo inicial con el importe confirmado.
+        this.dialog.getDialogById('saldo-inicial')?.close(monto);
     }
 
     getEnteros(): string {

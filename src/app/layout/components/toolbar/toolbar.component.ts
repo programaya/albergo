@@ -13,7 +13,7 @@ import { DipsAtencionDialogComponent } from '../../../../@dips/components/atenci
 
 import { AutentificacionService } from 'src/app/sesion/autentificacion.service';
 import { DipsUsuarioService } from 'src/@dips/services/usuario.service';
-import { PHPService } from 'src/app/php/servicio/php.service';
+import { PHPService } from 'docs/elimina/php/servicio/php.service';
 
 // Parametros
 import { DipsParametroService } from 'src/@dips/services/parametro/parametro.service';

@@ -1,71 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegistroRoutingModule } from './registro-routing.module';
-
-// basedatos
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-// MATERIAL
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRippleModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
-// DIPS
-import { DipsSharedModule } from '../../../@dips/shared.module';
-import { DipsConfirmDialogModule, DipsSidebarModule } from '../../../@dips/components';
-
-// COMPONENTES
-import { RegistroListComponent } from './registro-list/registro-list.component';
-import { RegistroBaseComponent } from './registro-base/registro-base.component';
-
-import { RegistroSidebarComponent } from './registro-sidebars/registro-sidebars.component';
-import { RegistroFormDialogComponent } from './registro-form/registro-form.component';
-
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorPersonal } from '../../../@dips/funciones/dips.paginator';
+import { DetalleArqueoModule } from '../../principal/caja/arqueo/detalle-arqueo/detalle-arqueo.module';
+import { RegistroRoutingModule } from './registro-routing.module';
+import { RegistroComponent } from './registro.component';
 
 @NgModule({
-    declarations: [
-        RegistroBaseComponent,
-        RegistroSidebarComponent,
-        RegistroListComponent,
-        RegistroFormDialogComponent,
-        RegistroFormDialogComponent
-    ],
-    imports: [
-        CommonModule,
-        RegistroRoutingModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        DipsSharedModule,
-        DipsConfirmDialogModule,
-        DipsSidebarModule
-    ],
-    providers: [
-        {
-            provide: MatPaginatorIntl,
-            useClass: MatPaginatorPersonal
-        },
-    ]
+  declarations: [RegistroComponent],
+  imports: [CommonModule, FormsModule, RegistroRoutingModule, MatButtonModule,
+    MatDialogModule, MatIconModule, MatFormFieldModule, MatInputModule,
+    MatPaginatorModule, MatSortModule, DetalleArqueoModule],
+  providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorPersonal }]
 })
-export class RegistroModule {
-}
+export class RegistroModule { }

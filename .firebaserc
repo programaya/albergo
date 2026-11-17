@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "albergo-dips"
+  },
+  "targets": {
+    "albergo-dips": {
+      "hosting": {
+        "albergo": ["albergo-dips"]
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ import { Subject, of } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { DipsUsuarioService } from 'src/@dips/services/usuario.service';
 import { ArqueoDatabase } from '../../principal/caja/arqueo/arqueo.database';
-import { Caja, MEDIOS_PAGO } from '../../principal/caja/arqueo/arqueo.model';
+import { Caja, MEDIOS_PAGO, indicadoresCaja, indicadoresMovimiento, colorIndicadores, textoIndicadores } from '../../principal/caja/arqueo/arqueo.model';
 import { DetalleArqueoComponent } from '../../principal/caja/arqueo/detalle-arqueo/detalle-arqueo.component';
 
 @Component({
@@ -15,6 +15,9 @@ import { DetalleArqueoComponent } from '../../principal/caja/arqueo/detalle-arqu
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent implements OnInit, OnDestroy {
+  colorCaja = (caja: Caja) => colorIndicadores(indicadoresCaja(caja));
+  indicadores = (caja: Caja) => textoIndicadores(indicadoresCaja(caja));
+
   cajas: Caja[] = [];
   busqueda = '';
   cargando = true;

@@ -21,13 +21,17 @@ export const MEDIOS_PAGO: { codigo: string; clave: keyof TotalesCaja; nombre: st
 
 
 export interface MovimientoCaja {
+    automatico?: boolean;
+    fueSucia?: boolean;
     fechaInicio: Date;
     fechaFin?: Date;
     tipo: string;
     descripcion: string;
     monto: number;
     usuario: string;
-    datos: string;  // 0 => efectivo,
+    // Indicadores concatenados: automático y luego fueSucia antes del cambio de estado.
+    // Cada indicador agrega '1' si está activo o '' si está inactivo.
+    datos: string;  // Posición 0: 0 => efectivo,
                     // 1 => debito,
                     // 2 => credito,
                     // 3 => billetera,
@@ -86,4 +90,21 @@ export function totalMovimientosManuales(caja: Caja | null): number {
     return (caja?.movimientos || [])
         .filter(movimiento => movimiento.datos === '7' || movimiento.datos === '8')
         .reduce((total, movimiento) => total + (Number(movimiento.monto) || 0), 0);
+}
+
+// Bits de caja.datos: 1 = algún movimiento automático, 2 = alguno fue sucia.
+export function indicadoresMovimiento(movimiento: MovimientoCaja): number {
+    return (movimiento.automatico ? 1 : 0) | (movimiento.fueSucia ? 2 : 0);
+}
+
+export function indicadoresCaja(caja: Caja): number {
+    return caja.movimientos.reduce((datos, movimiento) => datos | indicadoresMovimiento(movimiento), Number(caja.datos) || 0);
+}
+
+export function colorIndicadores(datos: number): string | null {
+    return datos & 2 ? '#c62828' : datos & 1 ? '#1565c0' : null;
+}
+
+export function textoIndicadores(datos: number): string {
+    return [datos & 1 ? 'Automático' : '', datos & 2 ? 'Fue sucia' : ''].filter(Boolean).join(' · ');
 }

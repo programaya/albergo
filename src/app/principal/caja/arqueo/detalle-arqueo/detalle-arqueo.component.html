@@ -4,7 +4,7 @@
   <h3>Movimientos ({{ movimientos.length }})</h3>
   <div class="tabla-scroll"><table>
     <thead><tr><th *ngFor="let titulo of encabezados">{{ titulo }}</th></tr></thead>
-    <tbody><tr *ngFor="let movimiento of movimientos"><td *ngFor="let valor of movimiento">{{ valor || '—' }}</td></tr>
+    <tbody><tr *ngFor="let movimiento of movimientos; let i = index" [style.color]="colorMovimiento(i)"><td *ngFor="let valor of movimiento">{{ valor || '—' }}</td></tr>
       <tr *ngIf="!movimientos.length"><td [attr.colspan]="encabezados.length">No hay movimientos registrados.</td></tr></tbody>
   </table></div>
 </mat-dialog-content>

@@ -36,7 +36,7 @@
                             <table>
                                 <thead><tr><th>Fecha de fin</th><th>Concepto</th><th>Tipo</th><th class="importe">Importe</th></tr></thead>
                                 <tbody *ngIf="cajaData; else sinCaja">
-                                    <tr *ngFor="let movimiento of cajaData.movimientos"><td>{{ (fechaFinMovimiento(movimiento) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td><td>{{ movimiento.descripcion }}</td><td class="secondary-text">{{ movimiento.tipo }}</td><td class="importe">{{ movimiento.monto | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td></tr>
+                                    <tr *ngFor="let movimiento of cajaData.movimientos" [style.color]="colorMovimiento(movimiento)" [attr.title]="indicadores(movimiento)"><td>{{ (fechaFinMovimiento(movimiento) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td><td>{{ movimiento.descripcion }}</td><td>{{ movimiento.tipo }}</td><td class="importe">{{ movimiento.monto | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td></tr>
                                 </tbody>
                                 <ng-template #sinCaja><tbody><tr><td colspan="4" class="empty-state"><mat-icon>inbox</mat-icon><p>No hay una caja abierta</p><span class="secondary-text">Abrí una caja para comenzar el arqueo.</span></td></tr></tbody></ng-template>
                                 <tfoot *ngIf="cajaData"><tr><td colspan="3">Total de ingresos</td><td class="importe">{{ totalIngresos | currency:'ARS':'symbol-narrow':'1.2-2':'es-AR' }}</td></tr></tfoot>

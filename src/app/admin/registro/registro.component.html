@@ -27,7 +27,7 @@
             <th>Detalle</th>
           </tr></thead>
           <tbody>
-            <tr *ngFor="let caja of visibles" (click)="explorar(caja)" class="cierre-fila">
+            <tr *ngFor="let caja of visibles" (click)="explorar(caja)" class="cierre-fila" [style.color]="colorCaja(caja)" [attr.title]="indicadores(caja)">
               <td>{{ (fecha(caja.fechaApertura) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td>
               <td>{{ (fecha(caja.fechaCierre) | date:'dd/MM/yyyy HH:mm:ss') || '—' }}</td>
               <td>{{ caja.usuario || '—' }}</td>

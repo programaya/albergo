@@ -9,7 +9,7 @@ import { DipsUsuarioService } from 'src/@dips/services/usuario.service';
 import { DipsUtils } from 'src/@dips/utils';
 import { DipsConfirmDialogComponent } from 'src/@dips/components/confirm-dialog/confirm-dialog.component';
 import { ArqueoDatabase } from './arqueo.database';
-import { Caja, MovimientoCaja, TotalesCaja, totalMovimientosManuales } from './arqueo.model';
+import { Caja, MovimientoCaja, TotalesCaja, totalMovimientosManuales, indicadoresCaja, indicadoresMovimiento, colorIndicadores, textoIndicadores } from './arqueo.model';
 import { Usuarios } from 'src/app/sesion/cuenta.model';
 import { DetalleArqueoComponent } from './detalle-arqueo/detalle-arqueo.component';
 
@@ -19,6 +19,9 @@ import { DetalleArqueoComponent } from './detalle-arqueo/detalle-arqueo.componen
   styleUrls: ['./arqueo.component.scss']
 })
 export class ArqueoComponent implements OnInit, OnDestroy {
+  colorMovimiento = (movimiento: MovimientoCaja) => colorIndicadores(indicadoresMovimiento(movimiento));
+  indicadores = (movimiento: MovimientoCaja) => textoIndicadores(indicadoresMovimiento(movimiento));
+
   cajaId?: string | null;
   cajaIdActual: string | null = null;
   cajaData: Caja | null = null;

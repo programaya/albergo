@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import { Caja, MEDIOS_PAGO, MovimientoCaja } from './arqueo.model';
+import { Caja, MEDIOS_PAGO, MovimientoCaja, indicadoresCaja, indicadoresMovimiento } from './arqueo.model';
 import { DipsUtils } from 'src/@dips/utils';
 import { DipsUsuarioService } from 'src/@dips/services/usuario.service';
 import { environment } from 'src/environments/environment';
@@ -100,6 +100,7 @@ export class ArqueoDatabase {
             transaccion.update(referencia, {
                 cerrada: false,
                 movimientos: [...actual.movimientos, movimiento],
+                datos: indicadoresCaja(actual) | indicadoresMovimiento(movimiento),
                 [`totales.${medioPago.clave}`]: (Number(actual.totales[medioPago.clave]) || 0) + movimiento.monto,
                 'totales.movimientos': (Number(actual.totales.movimientos) || 0) + 1
             });

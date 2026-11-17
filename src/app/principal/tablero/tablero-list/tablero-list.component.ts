@@ -277,7 +277,9 @@ export class TableroListComponent implements OnInit, OnDestroy {
                                 descripcion: `Habitación ${fila.nombre} · ${actionType === 'checkIN' ? 'Ingreso' : (fila.aviso === 0 ? 'Estadía' : 'Salida')}`,
                                 monto: pago,
                                 usuario: this.usuario.email || '',
-                                datos: data.moneda
+                                automatico: !!fila.automatico,
+                                fueSucia: !!fila.fueSucia,
+                                datos: `${data.moneda}${fila.automatico ? '1' : ''}${fila.fueSucia ? '1' : ''}`
                             });
                         } catch (error) {
                             this._matSnackBar.open('No se pudo registrar el cobro en caja. La operación no continuó.', 'Cerrar');

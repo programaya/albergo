@@ -12,5 +12,5 @@ export const environment = {
   },
   apiUrl: 'https://gessi.programaya.com',
   production: true,
-  version: '2.0.1'
+  version: '3.0.0'
 };

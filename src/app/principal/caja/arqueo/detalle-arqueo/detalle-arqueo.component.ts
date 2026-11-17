@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Caja, MEDIOS_PAGO } from '../arqueo.model';
+import { Caja, MEDIOS_PAGO, indicadoresCaja, indicadoresMovimiento, colorIndicadores, textoIndicadores } from '../arqueo.model';
 
 @Component({
   selector: 'app-detalle-arqueo',
@@ -9,6 +9,7 @@ import { Caja, MEDIOS_PAGO } from '../arqueo.model';
 })
 export class DetalleArqueoComponent {
   readonly encabezados = ['Fecha de ingreso', 'Fecha de egreso', 'Concepto', 'Tipo', 'Importe', 'Usuario', 'Medio / operación'];
+  colorMovimiento = (indice: number) => colorIndicadores(indicadoresMovimiento(this.caja.movimientos[indice]));
   readonly resumen: string[][];
   readonly movimientos: string[][];
 
@@ -18,7 +19,7 @@ export class DetalleArqueoComponent {
       ['Punto de venta', caja.puntoVenta], ['Usuario', caja.usuario],
       ['Fecha de apertura', this.fecha(caja.fechaApertura)], ['Fecha de cierre', this.fecha(caja.fechaCierre)],
       ['Monto inicial', this.importe(caja.montoInicial)], ['Monto de cierre', this.importe(caja.montoCierre)],
-      ['Datos', String(caja.datos)],
+      ['Datos', textoIndicadores(indicadoresCaja(caja))],
       ...MEDIOS_PAGO.map(medio => [medio.nombre, this.importe(caja.totales?.[medio.clave])]),
       ['Cantidad de movimientos contabilizados', String(caja.totales?.movimientos || 0)]
     ];
@@ -66,7 +67,7 @@ export class DetalleArqueoComponent {
     marco.style.cssText = 'position:fixed;width:0;height:0;border:0';
     const escapar = (valor: string) => String(valor ?? '').replace(/[&<>"']/g, caracter =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' } as Record<string, string>)[caracter]);
-    const fila = (valores: string[], etiqueta = 'td') => '<tr>' + valores.map(valor =>
+    const fila = (valores: string[], etiqueta = 'td', color: string | null = null) => `<tr style="color:${color || 'inherit'}">` + valores.map(valor =>
       `<${etiqueta}>${escapar(valor)}</${etiqueta}>`).join('') + '</tr>';
     marco.onload = () => {
       const ventana = marco.contentWindow;
@@ -78,7 +79,7 @@ export class DetalleArqueoComponent {
     marco.srcdoc = `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Albergo - Detalle de arqueo</title>
       <style>@page{size:A4 landscape;margin:12mm}body{font:11px Arial;color:#222}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #bbb;padding:6px;text-align:left;overflow-wrap:anywhere}thead{display:table-header-group}tr{break-inside:avoid}h1{font-size:20px}</style>
       </head><body><h1>Albergo</h1><h2>Detalle de arqueo de caja</h2><table><tbody>${this.resumenVisible.map(valores => fila(valores)).join('')}</tbody></table>
-      <h2>Movimientos (${this.movimientos.length})</h2><table><thead>${fila(this.encabezados, 'th')}</thead><tbody>${this.movimientos.map(valores => fila(valores)).join('')}</tbody></table></body></html>`;
+      <h2>Movimientos (${this.movimientos.length})</h2><table><thead>${fila(this.encabezados, 'th')}</thead><tbody>${this.movimientos.map((valores, indice) => fila(valores, 'td', this.colorMovimiento(indice))).join('')}</tbody></table></body></html>`;
     document.body.appendChild(marco);
   }
 }
